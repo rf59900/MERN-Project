@@ -4,6 +4,9 @@ const path = require('path');
 const { route } = require('./routes/users');
 require('dotenv').config()
 
+app.use(express.urlencoded({ extended: true} ));
+app.use(express.json());
+
 const userRouter = require(path.join(__dirname, 'routes', 'users.js'));
 app.use('/users', userRouter);
 
