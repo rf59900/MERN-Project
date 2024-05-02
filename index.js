@@ -1,8 +1,10 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const { route } = require('./routes/users');
 require('dotenv').config()
+
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost:27017/testdb');
 
 app.use(express.urlencoded({ extended: true} ));
 app.use(express.json());
