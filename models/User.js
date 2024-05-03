@@ -23,7 +23,8 @@ const userSchema = Schema({
         type: Date,
         default: () => Date.now(),
         immutable: true
-    }
+    },
+    avatar: String
 });
 
 module.exports = mongoose.model('User', userSchema);
