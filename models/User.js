@@ -12,19 +12,24 @@ const userSchema = Schema({
     },
     username: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     password: {
         type: String,
         required: true
     },
-    email: String,
+    email: {
+        type: String,
+        unique: true
+    },
     createdAt: {
         type: Date,
         default: () => Date.now(),
         immutable: true
     },
-    avatar: String
+    avatar: String,
+    refreshToken: String
 });
 
 module.exports = mongoose.model('User', userSchema);
