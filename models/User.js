@@ -29,7 +29,11 @@ const userSchema = Schema({
         immutable: true
     },
     avatar: String,
-    refreshToken: String
+    refreshToken: String,
+    roles: {
+        type: [String],
+        default: ["User"]
+    }
 });
 
 module.exports = mongoose.model('User', userSchema);

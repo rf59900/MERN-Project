@@ -3,6 +3,7 @@ const app = express();
 const path = require('path');
 require('dotenv').config()
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/testdb');
@@ -14,6 +15,8 @@ app.use(cors({
 
 app.use(express.urlencoded({ extended: true} ));
 app.use(express.json());
+
+app.use(cookieParser());
 
 const userRouter = require(path.join(__dirname, 'routes', 'users.js'));
 const authRouter = require(path.join(__dirname, 'routes', 'auth.js'));
