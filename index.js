@@ -18,10 +18,17 @@ app.use(express.json());
 
 app.use(cookieParser());
 
-const userRouter = require(path.join(__dirname, 'routes', 'users.js'));
+const usersRouter = require(path.join(__dirname, 'routes', 'users.js'));
 const authRouter = require(path.join(__dirname, 'routes', 'auth.js'));
-app.use('/users', userRouter);
+const postsRouter = require(path.join(__dirname, 'routes', 'posts.js'));
+
+const verifyJWT = require(path.join(__dirname, 'middleware', 'verifyJWT.js'));
+app.use('/users', usersRouter);
 app.use('/auth', authRouter);
+
+app.use(verifyJWT);
+app.use('/posts',postsRouter);
+
 
 
 app.get('/', (req, res) => {

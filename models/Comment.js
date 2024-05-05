@@ -25,7 +25,8 @@ const commentSchema = Schema({
         type: mongoose.SchemaTypes.ObjectId,
         ref: 'Comment',
 
-    }
+    },
+    img: String
 });
 
 module.exports = mongoose.model('Post', postSchema);

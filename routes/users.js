@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const path = require('path');
 const userController = require(path.join('..', 'controllers', 'usersController'));
-const verifyJWT = require(path.join('..', 'middleware', 'verifyJWT'));
 const verifyRoles = require(path.join('..', 'middleware', 'verifyRoles'));
 
 const multer = require('multer');
