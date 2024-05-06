@@ -12,7 +12,6 @@ router
     .route('/')
     .get(userController.getAllUsers)
     .post(upload.single('avatar'), userController.createUser)
-    .delete(userController.deleteUser);
 
 router
     .route('/:username')

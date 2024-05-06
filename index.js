@@ -6,7 +6,8 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/testdb');
+const conn = mongoose.connect('mongodb://127.0.0.1:27017/testdb');
+conn.catch(err => console.log(err))
 
 app.use(cors({
     origin: "http://127.0.0.1:3000",
@@ -26,7 +27,7 @@ const verifyJWT = require(path.join(__dirname, 'middleware', 'verifyJWT.js'));
 app.use('/users', usersRouter);
 app.use('/auth', authRouter);
 
-app.use(verifyJWT);
+//app.use(verifyJWT);
 app.use('/posts',postsRouter);
 
 

@@ -15,7 +15,8 @@ router
     .post(upload.single('img'), postsController.createPost)
 
 router
-    .route('/:id')
+    .route('/:username')
+    .get(postsController.getPostsByUser)
     .delete(postsController.deletePost)
 
 module.exports = router;
