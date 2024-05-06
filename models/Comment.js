@@ -2,10 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const commentSchema = Schema({
-    body: {
-        type: String,
-        required: true
-    },
+    body: String,
     createdAt: {
         type: Date,
         default: () => Date.now(),
@@ -14,12 +11,12 @@ const commentSchema = Schema({
     user: {
         type: mongoose.SchemaTypes.ObjectId,
         ref: 'User',
-        required: True
+        required: true
     },
     post: {
         type: mongoose.SchemaTypes.ObjectId,
         ref: 'Post',
-        required: True
+        required: true
     },
     replyTo: {
         type: mongoose.SchemaTypes.ObjectId,
@@ -29,4 +26,4 @@ const commentSchema = Schema({
     img: String
 });
 
-module.exports = mongoose.model('Post', postSchema);
+module.exports = mongoose.model('Comment', commentSchema);
