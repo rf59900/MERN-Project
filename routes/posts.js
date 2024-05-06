@@ -12,10 +12,11 @@ const upload = multer({ dest: path.join('uploads', 'posts')})
 router
     .route('/')
     .get(postsController.getAllPosts)
-    .post(upload.single('img'), postsController.createPost)
+    .post(postsController.createPost, upload.single('img'))
 
 router
-    .route('/:username')
+    // identifier is used as username in getPostsByUser and as the post id in deletePost
+    .route('/:identifier')
     .get(postsController.getPostsByUser)
     .delete(postsController.deletePost)
 

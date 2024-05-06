@@ -27,7 +27,7 @@ const verifyJWT = require(path.join(__dirname, 'middleware', 'verifyJWT.js'));
 app.use('/users', usersRouter);
 app.use('/auth', authRouter);
 
-//app.use(verifyJWT);
+app.use(verifyJWT);
 app.use('/posts',postsRouter);
 
 
