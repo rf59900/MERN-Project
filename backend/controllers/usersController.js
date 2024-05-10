@@ -28,7 +28,7 @@ const getAllUsers = async (req, res) => {
 
 const createUser = async (req, res) => {
     // avatar is either path to avatar image or null
-    avatar = req.file == undefined ? null: req.file.path;
+    avatar = req.file == undefined ? null: req.file.filename;
     firstname = req.body.firstname;
     lastname = req.body.lastname;
     username = req.body.username;

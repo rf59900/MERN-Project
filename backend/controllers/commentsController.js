@@ -22,7 +22,7 @@ const getAllComments = async (req, res) => {
 
 const createComment = async (req, res) => {
     // img is either path to post image or null
-    img = req.file == undefined ? null: req.file.path;
+    img = req.file == undefined ? null: req.file.filename;
     body = req.body.body == undefined ? null: req.body.body;
     board = req.body.board;
     replyTo = req.body.replyTo == undefined ? null: req.body.replyTo;

@@ -38,7 +38,7 @@ const getAllPosts = async (req, res) => {
 
 const createPost = async (req, res) => {
     // img is either path to post image or null
-    img = req.file == undefined ? null: req.file.path;
+    img = req.file == undefined ? null: req.file.filename;
     body = req.body.body;
     board = req.body.board;
 
@@ -103,9 +103,21 @@ const getPostsByUser = async (req, res) => {
     }
 }
 
+const getPostsByBoard = async (req, res) => {
+    board = req.params.board
+    if (await Post.exists({ board: board })) {
+        const posts = await Post.find({ board: board }).populate("user");
+        res.status(200).json(posts);
+    } else {
+        res.status(404).json({"ERROR": "Board has no posts/does not exist"});
+        return;
+    }
+}
+
 module.exports = {
     getAllPosts,
     createPost,
     deletePost,
-    getPostsByUser
+    getPostsByUser,
+    getPostsByBoard
 }

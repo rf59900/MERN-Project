@@ -10,7 +10,7 @@ const conn = mongoose.connect('mongodb://127.0.0.1:27017/testdb');
 conn.catch(err => console.log(err))
 
 app.use(cors({
-    origin: "http://127.0.0.1:3000",
+    origin: "http://localhost:5173",
     credentials: true
 }))
 
@@ -23,15 +23,16 @@ const usersRouter = require(path.join(__dirname, 'routes', 'users.js'));
 const authRouter = require(path.join(__dirname, 'routes', 'auth.js'));
 const postsRouter = require(path.join(__dirname, 'routes', 'posts.js'));
 const commentsRouter = require(path.join(__dirname, 'routes', 'comments.js'));
+const boardsRouter = require(path.join(__dirname, 'routes', 'boards.js'));
 
 const verifyJWT = require(path.join(__dirname, 'middleware', 'verifyJWT.js'));
 app.use('/users', usersRouter);
 app.use('/auth', authRouter);
 
-app.use(verifyJWT);
+//app.use(verifyJWT);
 app.use('/posts',postsRouter);
 app.use('/comments', commentsRouter);
-
+app.use('/boards', boardsRouter);
 
 
 app.get('/', (req, res) => {

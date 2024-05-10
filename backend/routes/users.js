@@ -5,7 +5,7 @@ const userController = require(path.join('..', 'controllers', 'usersController')
 const verifyRoles = require(path.join('..', 'middleware', 'verifyRoles'));
 
 const multer = require('multer');
-const upload = multer({ dest: path.join('uploads', 'avatars')})
+const upload = multer({ dest: path.join('..', 'frontend', 'public', 'uploads', 'avatars')})
 
 
 router
