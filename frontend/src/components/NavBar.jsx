@@ -7,7 +7,7 @@ export const NavBar = () => {
     <>
     <nav className="navbar navbar-expand sticky-top navbar-dark bg-dark">
       <div className="container text-light">
-      <a class="navbar-brand" href="#">Forum</a>
+      <a className="navbar-brand" href="#">Forum</a>
       <ul className="navbar-nav">
         {items.map(item => {
           <li className="nav-item">
