@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { Post } from "../components/Post";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 export const Board = () => {
     const { board } = useParams();
@@ -21,7 +22,7 @@ export const Board = () => {
         maxWidth: "40rem"
         }}>
         {posts.map(post => {
-         return <Post postInfo={post}/>
+         return <Link to={"/posts/" + post._id}><Post postInfo={post}/></Link> 
         })}
         </div>
       </>

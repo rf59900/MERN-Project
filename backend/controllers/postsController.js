@@ -108,8 +108,26 @@ const getPostsByBoard = async (req, res) => {
     if (await Post.exists({ board: board })) {
         const posts = await Post.find({ board: board }).populate("user");
         res.status(200).json(posts);
+        return;
     } else {
         res.status(404).json({"ERROR": "Board has no posts/does not exist"});
+        return;
+    }
+}
+
+const getPostByID = async (req, res) => {
+    id = req.params.id
+    if (!(isValidObjectId(id))) {
+        res.status(400).json({"ERROR": "Invalid Post id"});
+        return;
+    }
+    else if (await Post.exists({ _id: id })) {
+        const post = await Post.find({ _id: id }).populate("user");
+        res.status(200).json(post);
+        return;
+    } else {
+        res.status(404).json({"ERROR": "Post does not exist"});
+        console.log("yes")
         return;
     }
 }
@@ -119,5 +137,6 @@ module.exports = {
     createPost,
     deletePost,
     getPostsByUser,
-    getPostsByBoard
+    getPostsByBoard,
+    getPostByID
 }

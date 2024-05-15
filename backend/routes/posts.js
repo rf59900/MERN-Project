@@ -20,4 +20,8 @@ router
     .get(postsController.getPostsByUser)
     .delete(postsController.deletePost)
 
+router.
+    route('/view/:id')
+    .get(postsController.getPostByID);
+
 module.exports = router;

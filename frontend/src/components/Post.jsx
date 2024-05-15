@@ -1,13 +1,15 @@
+import { Link } from "react-router-dom"
 import { AvatarImage } from "./AvatarImage"
 
  export const Post = ({postInfo}) => {
    return (
      <>
     <div className="row p-3 gap-3">
-    <div className="col bg-primary pt-2"
-    style={{maxWidth: "5rem"}}><AvatarImage username={postInfo.user.username} image={postInfo.user.avatar}/></div>
+    <div className="col bg-primary pt-4"
+    style={{maxWidth: "5rem", objectFit: "contain"}}><AvatarImage username={postInfo.user.username} image={postInfo.user.avatar}/></div>
     <div className="col bg-primary"
-    style={{maxWidth: "8rem",}}>
+    style={{objectFit: "contain",
+    maxWidth: "8rem"}}>
     <img src={'/uploads/posts/' + postInfo.img} className="figure-img img-fluid rounded pt-2" 
     style={{height: "10rem"}}/>
     </div>

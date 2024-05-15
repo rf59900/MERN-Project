@@ -1,7 +1,8 @@
 import { NavBar } from "./components/NavBar";
-import { Route, Routes } from "react-router-dom";
+import { Link, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import { Board } from "./pages/Board";
+import { ViewPost } from "./pages/ViewPost";
 
 const App = () => {
   return (
@@ -10,6 +11,7 @@ const App = () => {
     <Routes>
       <Route path="/" element={<Home/>} />
       <Route path="/boards/:board" element={<Board/>} />
+      <Route path="/posts/:post" element={<ViewPost/>} />
     </Routes>
     </>
   )
