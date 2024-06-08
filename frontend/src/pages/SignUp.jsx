@@ -1,16 +1,18 @@
 import { useContext, useState } from "react"
 import axiosConfig from "../axiosConfig";
-import AuthContext from "../context/AuthProvider";
 
 export const SignUp = () => {
     const [username, setUsername] = useState('');
     const [password1, setPassword1] = useState('');
     const [password2, setPassword2] = useState('');
+    const [avatar, setAvatar] = useState('');
+    const [firstname, setFirstName] = useState('');
+    const [lastname, setLastName] = useState('');
+    const [email, setEmail] = useState('');
 
 
     const [errorMsg, setErrorMsg] = useState('');
 
-    const { setAuth } = useContext(AuthContext);
 
     const handleSubmit = async (e) => {
         try {
@@ -22,26 +24,36 @@ export const SignUp = () => {
                 setPassword2('')
                 return     
             }
-            const response = await axiosConfig.post('/auth', {
+            const response = await axiosConfig.post('/users', {
+                avatar: avatar,
+                firstname: firstname,
+                lastname: lastname,
                 username: username,
-                password: password1
+                password1: password1,
+                password2: password2,
+                email: email
                 });
                 console.log(response);
-            const accessToken = response?.data?.accessToken
-            const roles = response?.data?.roles
-            setAuth({ username, password, roles, accessToken });
+            setAvatar('')
             setUsername('')
             setPassword1('')
             setPassword2('')
+            setFirstName('')
+            setLastName('')
+            setEmail('')
         } catch (err) {
             if (!err) {
                 setErrorMsg('No response from server.')
             } else {
                 setErrorMsg(err?.response?.data?.Error)
             }
+            setAvatar('')
             setUsername('')
             setPassword1('')
             setPassword2('')
+            setFirstName('')
+            setLastName('')
+            setEmail('')
         }
     }
 
@@ -50,11 +62,44 @@ export const SignUp = () => {
         <div className="container col-4 mt-5">
         <h1>Sign Up</h1>
         <form onSubmit={handleSubmit}>
-        { errorMsg ? <div class="alert alert-danger" role="alert">{errorMsg}</div>: null}
-            <div class="form-group">
-                <label for="username">Username</label>
+        { errorMsg ? <div className="alert alert-danger" role="alert">{errorMsg}</div>: null}
+            <div className="form-group">
+                <label htmlFor="firstname">First Name</label>
+                <input type="firstname" 
+                    className="form-control" 
+                    id="firstname" 
+                    aria-describedby="firstnameHelp" 
+                    placeholder="Enter first name"
+                    value={firstname}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    />
+            </div>
+            <div className="form-group">
+                <label htmlFor="lastname">Last Name</label>
+                <input type="lastname" 
+                    className="form-control" 
+                    id="lastname" 
+                    aria-describedby="lastnameHelp" 
+                    placeholder="Enter last name"
+                    value={lastname}
+                    onChange={(e) => setLastName(e.target.value)}
+                    />
+            </div>
+            <div className="form-group">
+                <label htmlFor="email">Email</label>
+                <input type="email" 
+                    className="form-control" 
+                    id="email" 
+                    aria-describedby="emailHelp" 
+                    placeholder="Enter email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    />
+            </div>
+            <div className="form-group">
+                <label htmlFor="username">Username</label>
                 <input type="username" 
-                    class="form-control" 
+                    className="form-control" 
                     id="username" 
                     aria-describedby="usernameHelp" 
                     placeholder="Enter username"
@@ -62,34 +107,39 @@ export const SignUp = () => {
                     onChange={(e) => setUsername(e.target.value)}
                     />
             </div>
-            <div class="form-group">
-                <label for="password1">Password</label>
+            <div className="form-group">
+                <label htmlFor="password1">Password</label>
                 <input 
                     type="password" 
-                    class="form-control" 
+                    className="form-control" 
                     id="password1" 
                     placeholder="Password"
                     value={password1}
                     onChange={(e) => setPassword1(e.target.value)}
                     />
             </div>
-            <div class="form-group">
-                <label for="password">Confirm Password</label>
+            <div className="form-group">
+                <label htmlFor="password">Confirm Password</label>
                 <input 
                     type="password" 
-                    class="form-control" 
+                    className="form-control" 
                     id="password2" 
                     placeholder="Password"
                     value={password2}
                     onChange={(e) => setPassword2(e.target.value)}
                     />
             </div>
-            <div class="mb-3">
-                <label for="formFile" class="form-label">Upload Avatar Image</label>
-                <input class="form-control" type="file" id="formFile"/>
+            <div className="mb-3">
+                <label htmlFor="formFile" className="form-label">Upload Avatar Image (Optional)</label>
+                <input 
+                    className="form-control" 
+                    type="file" 
+                    id="avatar"
+                    onChange={(e) => setAvatar(e.target.value)}
+                    />
             </div>
             <br/>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" className="btn btn-primary">Submit</button>
         </form>
         </div>
         </>
