@@ -5,6 +5,7 @@ import { Board } from "./pages/Board";
 import { ViewPost } from "./pages/ViewPost";
 import { Login } from "./pages/Login";
 import { SignUp } from "./pages/SignUp";
+import { LogOut} from "./pages/LogOut";
 
 const App = () => {
   return (
@@ -16,7 +17,7 @@ const App = () => {
       <Route path="/posts/:post" element={<ViewPost/>} />
       <Route path="/login" element={<Login/>} />
       <Route path="/sign-up" element={<SignUp/>} />
-
+      <Route path="/logout" element={<LogOut/>} />
     </Routes>
     </>
   )
