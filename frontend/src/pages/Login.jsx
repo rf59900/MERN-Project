@@ -1,6 +1,7 @@
 import { useContext, useState } from "react"
 import axiosConfig from "../axiosConfig";
 import AuthContext from "../context/AuthProvider";
+import { useNavigate } from "react-router-dom";
 
 export const Login = () => {
     const [username, setUsername] = useState('');
@@ -9,6 +10,8 @@ export const Login = () => {
     const [errorMsg, setErrorMsg] = useState('');
 
     const { setAuth } = useContext(AuthContext);
+
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         try {
@@ -23,6 +26,8 @@ export const Login = () => {
             setAuth({ username, password, roles, accessToken });
             setUsername('')
             setPassword('')
+            navigate(-1);
+
         } catch (err) {
             if (!err) {
                 setErrorMsg('No response from server.')
