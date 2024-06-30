@@ -1,30 +1,36 @@
 import { useParams } from "react-router-dom";
-import { Post } from "../components/Post";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import CreatePost from "../components/CreatePost";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import { Post } from "../components/Post";
 
 export const Board = () => {
     const { board } = useParams();
     const [posts, setPosts] = useState([]);
+    const axiosPrivate = useAxiosPrivate()
     const handlePosts = useEffect(() => {
       async function getPosts () {
-        const response = await fetch(`http://localhost:5000/boards/${board}`);
-        const newPosts = await response.json();
-        setPosts(newPosts);
+        try {
+          const response = await axiosPrivate.get(`http://localhost:5000/boards/${board}`);
+          console.log(response.data)
+          const newPosts = response.data
+          setPosts(newPosts);
+        } catch(err) {
+          console.log(err)
+        }
       }
     getPosts()
-    }) 
+    }, []) 
     return (
       <>
+      <div className="container border border-primary">
         <h1>Welcome to {board}</h1>
-        <div className="container"
-        style={{backgroundColor: "red",
-        maxWidth: "40rem"
-        }}>
-        {posts.map(post => {
-         return <Link to={"/posts/" + post._id}><Post postInfo={post}/></Link> 
+        <CreatePost board={board}/>
+        {posts.map((post) => {
+          return <Post post={post}/>
         })}
-        </div>
+      </div>
       </>
     )
 }

@@ -1,14 +1,16 @@
 import { useContext, useState } from "react"
-import axiosConfig from "../axiosConfig";
+import axios from "../api/axios";
 
 export const SignUp = () => {
     const [username, setUsername] = useState('');
     const [password1, setPassword1] = useState('');
     const [password2, setPassword2] = useState('');
-    const [avatar, setAvatar] = useState('');
+    const [avatar, setAvatar] = useState(null);
     const [firstname, setFirstName] = useState('');
     const [lastname, setLastName] = useState('');
     const [email, setEmail] = useState('');
+
+
 
 
     const [errorMsg, setErrorMsg] = useState('');
@@ -24,17 +26,32 @@ export const SignUp = () => {
                 setPassword2('')
                 return     
             }
-            const response = await axiosConfig.post('/users', {
-                avatar: avatar,
-                firstname: firstname,
-                lastname: lastname,
-                username: username,
-                password1: password1,
-                password2: password2,
-                email: email
-                });
+            const form = new FormData();
+            form.append('avatar', avatar);
+            form.append('firstname', firstname);
+            form.append('lastname', lastname);
+            form.append('username', username);
+            form.append('password1', password1);
+            form.append('password2', password2);
+            form.append('email', email);
+            // first two registered users are automatically
+            const users = await axios.get('/users');
+            if (users?.data?.lenght < 3 || users?.data?.lenght === undefined) {
+                form.append('roles[]', 'User'); 
+                form.append('roles[]', 'Admin'); 
+                const response = await axios.post('/users', form, {
+                    headers: {
+                        'content-type': 'multipart/form-data'
+                    }});
                 console.log(response);
-            setAvatar('')
+            } else {
+                const response = await axios.post('/users', form, {
+                    headers: {
+                        'content-type': 'multipart/form-data'
+                    }});
+                console.log(response);
+            }
+            setAvatar(null)
             setUsername('')
             setPassword1('')
             setPassword2('')
@@ -135,7 +152,7 @@ export const SignUp = () => {
                     className="form-control" 
                     type="file" 
                     id="avatar"
-                    onChange={(e) => setAvatar(e.target.value)}
+                    onChange={(e) => setAvatar(e.target.files[0])}
                     />
             </div>
             <br/>

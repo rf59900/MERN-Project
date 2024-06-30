@@ -35,6 +35,7 @@ const createUser = async (req, res) => {
     password1 = req.body.password1;
     password2 = req.body.password2;
     email = req.body.email;
+    roles = req?.body?.roles;
 
     // do error checking
     if (firstname.length <= 2) {
@@ -85,7 +86,7 @@ const createUser = async (req, res) => {
     }
 
     // create new user in db, hash password with bcrypt
-    const newUser = new User({ firstname: firstname, lastname: lastname, username: username, password: await bcrypt.hash(password1, 10), email: email, avatar: avatar});
+    const newUser = new User({ firstname: firstname, lastname: lastname, username: username, password: await bcrypt.hash(password1, 10), email: email, roles: roles, avatar: avatar});
     await newUser.save();
 
     res.status(200).json({"Sucess": "New user created"});

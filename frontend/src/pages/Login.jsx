@@ -1,6 +1,6 @@
 import { useContext, useState } from "react"
-import axiosConfig from "../axiosConfig";
-import AuthContext from "../context/AuthProvider";
+import axios from "../api/axios";
+import useAuth from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 
 export const Login = () => {
@@ -9,21 +9,24 @@ export const Login = () => {
 
     const [errorMsg, setErrorMsg] = useState('');
 
-    const { setAuth } = useContext(AuthContext);
+    const { setAuth } = useAuth();
 
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         try {
             e.preventDefault()
-            const response = await axiosConfig.post('/auth', {
-                username: username,
-                password: password
-                });
-                console.log(response);
+            const response = await axios.post('/auth',
+                {
+                    username: username,
+                    password: password,
+                    headers: {'Content-Type': 'application/json'},
+                    withCredentials: true
+                }
+            );
+            console.log(response.headers.cookies);
             const accessToken = response?.data?.accessToken
-            const roles = response?.data?.roles
-            setAuth({ username, password, roles, accessToken });
+            setAuth({ user: username, accessToken });
             setUsername('')
             setPassword('')
             navigate(-1);

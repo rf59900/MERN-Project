@@ -1,12 +1,13 @@
 import { useContext, useEffect, useState } from "react"
 import { Link } from "react-router-dom";
-import AuthContext from "../context/AuthProvider";
+import useAuth from "../hooks/useAuth";
+
 
 export const NavBar = () => {
   const [items, setItems] = useState([1, 2, 3]);
   const [user, setUser] = useState();
 
-  const { auth } = useContext(AuthContext);
+  const { auth } = useAuth();
   console.log(auth)
 
   useEffect(() => {
@@ -28,7 +29,7 @@ export const NavBar = () => {
           </li> :
           <li className="nav-item">
           <p
-          style={{marginBottom: "0rem"}}>{auth?.username}</p>
+          style={{marginBottom: "0rem"}}>{auth.user}</p>
           <a href="#" className="nav-link"><Link to={"/logout"}>Log out</Link></a>
           </li>
           }

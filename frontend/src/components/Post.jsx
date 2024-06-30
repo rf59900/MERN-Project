@@ -1,24 +1,22 @@
 import { Link } from "react-router-dom"
 import { AvatarImage } from "./AvatarImage"
+import { useEffect } from "react"
 
- export const Post = ({postInfo}) => {
+
+ export const Post = ({post}) => {
+
    return (
      <>
-    <div className="row p-3 gap-3">
-    <div className="col bg-primary pt-4"
-    style={{maxWidth: "5rem", objectFit: "contain"}}><AvatarImage username={postInfo.user.username} image={postInfo.user.avatar}/></div>
-    <div className="col bg-primary"
-    style={{objectFit: "contain",
-    maxWidth: "8rem"}}>
-    <img src={'/uploads/posts/' + postInfo.img} className="figure-img img-fluid rounded pt-2" 
-    style={{height: "10rem"}}/>
-    </div>
-    <div className="col bg-primary"
-    style={{maxWidth: "35rem"}}>
-    <div className="row">{postInfo._id}</div>
-    <div className="row">{postInfo.body}</div>
-    </div>
-    </div>
+     <div className="row justify-content-start border border-primary mt-5 mb-5">
+     <div className="col-2 border border-primary py-5 px-4">
+      <img  className="img-fluid border border-danger my-auto" src={'/uploads/avatars/' + post.user.avatar}/>
+      <div className="d-flex flex-row border border-danger justify-content-center py-3"><p>{post.user.username}</p></div>
+      </div>
+      <div className="col-3 border border-primary py-5 px-4"><img  className="img-fluid border border-danger my-auto" src={'/uploads/posts/' + post.img}/></div>
+      <div className="col-7 border border-primary py-5 px-4">
+      <p>{post.body}</p>
+      </div>
+     </div>
      </>
    )
  }

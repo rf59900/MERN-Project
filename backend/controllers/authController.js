@@ -35,8 +35,9 @@ const handleLogin = async (req, res) => {
         await User.updateOne({username: username}, { $set: { refreshToken: refreshToken}});
         
         // add secure: true and sameSite: true when working with frontend in chrome
-        res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
-        res.status(200).json({ roles, accessToken });
+        res.cookie("jwt", refreshToken, { httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000 });
+        res.status(200).json({ accessToken });
 
     } else {
         res.status(400).json({"ERROR": "User failed to log in"});

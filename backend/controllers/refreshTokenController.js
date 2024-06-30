@@ -14,7 +14,7 @@ const handleRefreshToken = async (req, res) => {
     const refreshToken = cookies.jwt;
 
     if (!await User.exists({refreshToken: refreshToken})) {
-        res.status(403).json({"Error": "No jwt"})
+        res.status(403).json({"Error": "No jwt 2"})
         return;
     }
 
@@ -37,7 +37,7 @@ const handleRefreshToken = async (req, res) => {
                 process.env.ACCESS_TOKEN_SECRET,
                 {expiresIn: '5m'}
             )
-            res.status(200).json({accessToken})
+            res.status(200).json({ accessToken })
 
         }
     )

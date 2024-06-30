@@ -2,7 +2,9 @@ require('dotenv').config();
 const jwt = require('jsonwebtoken');
 
 const verifyJWT = (req, res, next) => {
+    console.log(req.headers)
     const authHeader = req.headers['authorization']
+    console.log(authHeader)
     if (!authHeader?.startsWith('Bearer ')) {
         res.status(401).json({"ERROR": "Unauthorized user"})
         return

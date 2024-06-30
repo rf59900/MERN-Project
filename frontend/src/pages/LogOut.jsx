@@ -1,16 +1,24 @@
 import { useContext, useEffect, useState } from "react"
-import AuthContext from "../context/AuthProvider"
+import useAuth from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import axios from "../api/axios";
 
 export const LogOut = () => {
-    const { setAuth } = useContext(AuthContext);
+    const { setAuth } = useAuth();
     const navigate = useNavigate();
     const sleep = (delay) => new Promise(res => setTimeout(res, delay));
     useEffect(() => {
         const handleLogout = async () => {
             await sleep(3000)
-            setAuth({})
-            navigate('/');
+            try {
+                const response = await axios.get('/auth/logout', {
+                    withCredentials: true
+                });
+                setAuth({})
+                navigate('/');
+            } catch (err) {
+                console.error(err);
+            }
         }
         handleLogout();
     })
