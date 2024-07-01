@@ -8,10 +8,10 @@ export const NavBar = () => {
   const [user, setUser] = useState();
 
   const { auth } = useAuth();
-  console.log(auth)
 
   useEffect(() => {
     setUser(auth?.user);
+    console.log(auth.roles)
   }, [])
   
   return (

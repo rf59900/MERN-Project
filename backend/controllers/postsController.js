@@ -69,8 +69,9 @@ const deletePost = async (req, res) => {
     const toBeDeleted = await Post.findOneAndDelete({_id : id})
     if (toBeDeleted) {
         if (toBeDeleted.img != null) {
-            fs.unlink(toBeDeleted.img, (err, data) => {
+            fs.unlink(path.join('..', 'frontend', 'public', 'uploads', 'posts', toBeDeleted.img), (err, data) => {
                 if (err) {
+                    console.log(err)
                     console.error("Post Image could not be deleted");
                     res.status(400).json({"ERROR": "Post image could not be deleted"});
                     return;
