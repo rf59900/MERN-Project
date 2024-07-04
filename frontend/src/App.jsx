@@ -1,8 +1,8 @@
 import { NavBar } from "./components/NavBar";
 import { Link, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
+import ViewPost from "./pages/ViewPost";
 import { Board } from "./pages/Board";
-import { ViewPost } from "./pages/ViewPost";
 import { Login } from "./pages/Login";
 import { SignUp } from "./pages/SignUp";
 import { LogOut} from "./pages/LogOut";
@@ -23,7 +23,7 @@ const App = () => {
 
         <Route element={<RequireAuth allowedRoles={['User']}/>}>
           <Route path="/boards/:board" element={<Board/>} />
-          <Route path="/posts/:post" element={<ViewPost/>} />
+          <Route path="/posts/:post" element={<ViewPost/>}/>
           <Route path="/logout" element={<LogOut/>} />
         </Route>
       </Route>

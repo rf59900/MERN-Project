@@ -1,61 +1,58 @@
-import { useState, useEffect } from "react"
-import { Post } from "../components/Post";
-import { useParams } from "react-router-dom";
 
-export const ViewPost = () => {
-    const [comments, setComments] = useState([]);
-    const [postInfo, setPostInfo] = useState();
+import { useParams } from 'react-router-dom'
+import { Post } from '../components/Post';
+import  Comment  from '../components/Comment';
+import useAxiosPrivate from '../hooks/useAxiosPrivate';
+import { useEffect, useState } from 'react';
+import CreateComment from '../components/CreateComment';
+
+const ViewPost = () => {
     const { post } = useParams();
+    const axiosPrivate = useAxiosPrivate();
+    const [postInfo, setPostInfo] = useState('');
+    const [comments, setComments] = useState([]);
+    const [commentBody, setCommentBody] = useState('');
 
     useEffect(() => {
-        async function getPostInfo () {
-            const response = await fetch(`http://localhost:5000/posts/view/${post}`);
-            const newPostInfo = await response.json();
-            setPostInfo(...newPostInfo);
-        }
-    getPostInfo()
-    }, [])
-    
-    useEffect(() => {
-        async function getComments () {
+        const handlePostInfo = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/comments/${post}`);
-                const newComments = await response.json();
-                const commentArray = [];
-                const replyArray = [];
-                // nest comments that reply to each other together in lists
-                newComments.forEach(comment => {
-                    if (comment.replyTo) {
-                        replyArray.push(comment)
-                    } else {
-                        commentArray.push([comment]);
-                    }
-                });
-                replyArray.forEach(reply => {
-                    const toAdd = commentArray.find(comment => comment._id == reply.replyTo);
-                    toAdd.push(reply)
-                })
-                console.log(commentArray)
-                setComments(commentArray);
-            } catch (err) {
-                console.log(err);
+                const response = await axiosPrivate.get(`/posts/view/${post}`);
+                setPostInfo(response.data[0]);
+            } catch(err) {
+                console.error(err);
             }
         }
-    getComments()
-    }, []) 
-    
+        handlePostInfo()
+    }, [])
 
-    return (
+    useEffect(() => {
+        const handComments = async () => {
+            try {
+                const response = await axiosPrivate.get(`/comments/${post}`);
+                setComments(response.data);
+            } catch(err) {
+                console.error(err);
+            }
+        }
+        handComments();
+    }, [])
+
+  return (
     <>
-     <div className="container"
-        style={{backgroundColor: "red",
-        maxWidth: "40rem"
-    }}>
-    {postInfo && <Post postInfo={postInfo} />}
-    {comments.map(comment => {
-        console.log(comment)
-    })}
+    <div className="container">
+    { postInfo
+    ? <><Post post={postInfo}/>
+        <div className="container">
+        <CreateComment post={postInfo._id}/>
+        { comments.map((comment) => {
+            return <Comment comment={comment}/>
+        })}
+        </div>
+        </>
+    : null}
     </div>
     </>
   )
 }
+
+export default ViewPost;
