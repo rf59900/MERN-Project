@@ -1,5 +1,8 @@
 # MERN-Project
 
-A forum website created using the MERN stack
-
-A change
+To run locally:
+cd backend
+npm run dev
+cd ..
+cd frontend
+npm run dev
