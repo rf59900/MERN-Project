@@ -16,6 +16,7 @@ const CreateComment = ({ post, replyTo }) => {
             form.append('img', image);
             form.append('body', postBody);
             form.append('post', post);
+            replyTo ? form.append('replyTo', replyTo) : null;
             const response = await axiosPrivate.post('/comments', form);
             console.log(response);
         } catch(err) {
@@ -29,10 +30,9 @@ const CreateComment = ({ post, replyTo }) => {
 
   return (
     <>
-    <div className="d-flex justify-content-center">
-    <div className="col-6">
+    <div className="d-flex flex-column container-fluid border border-primary mt-0 px-0">
     { active 
-    ?   <div className="form-group text-center">
+    ?   <div className="form-group text-center align-self-center">
         <form onSubmit={handleComment}>
         <label htmlFor="exampleFormControlTextarea1">Comment</label>
         <textarea className="form-control form-control-lg" id="newPost" onChange={(e) => setCommentBody(e.target.value)}></textarea>
@@ -55,9 +55,19 @@ const CreateComment = ({ post, replyTo }) => {
         </div>
         </form>
         </div>
-    : <div className="d-flex justify-content-center"><button type="button" className="btn btn-primary" onClick={() => setActive(true)}>Comment</button></div>
+    : <div className="col align-self-end my-0">
+        <div className="container" onClick={() => setActive(true)}>
+        <div className="row">
+        <div className="col border border-danger px-0">
+        <img className="img-fluid border border-danger mx-0 px-0" style={{"height": "2rem"}} src={'/icons/ForwardArrow.svg'}/>
+        </div>
+        <div className="col border border-danger mx-0 px-0">
+        <p>{ replyTo ? "Reply" : "Comment"}</p>
+        </div>
+        </div>
+        </div>
+        </div>
     }
-    </div>
     </div>
     </>
   )

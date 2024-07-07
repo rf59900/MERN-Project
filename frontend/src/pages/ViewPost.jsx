@@ -13,6 +13,24 @@ const ViewPost = () => {
     const [comments, setComments] = useState([]);
     const [commentBody, setCommentBody] = useState('');
 
+
+    const printReplies = (allComments, theComment) => {
+        const replies = allComments.filter(comment => comment.replyTo == theComment._id);
+        if (replies) {
+            return replies.map((reply) => {
+                return <>
+                    <div className="container">
+                    <Comment comment={reply} />
+                    </div>
+                    <div className="container">
+                    {printReplies(allComments, reply)}
+                    </div>
+                    </>
+            })
+        }
+    }
+   
+
     useEffect(() => {
         const handlePostInfo = async () => {
             try {
@@ -29,7 +47,8 @@ const ViewPost = () => {
         const handComments = async () => {
             try {
                 const response = await axiosPrivate.get(`/comments/${post}`);
-                setComments(response.data);
+                const comments = response.data;
+                setComments(comments);
             } catch(err) {
                 console.error(err);
             }
@@ -41,14 +60,21 @@ const ViewPost = () => {
     <>
     <div className="container">
     { postInfo
-    ? <><Post post={postInfo}/>
+    ? <>
+        <Post post={postInfo}/>
         <div className="container">
-        <CreateComment post={postInfo._id}/>
-        { comments.map((comment) => {
-            return <Comment comment={comment}/>
-        })}
+        {
+            comments.map((comment) => {
+                if (!comment.replyTo) {
+                    return <>
+                    <Comment comment={comment} />
+                    {printReplies(comments, comment)}
+                    </>
+                }
+            })
+        }
         </div>
-        </>
+    </>
     : null}
     </div>
     </>

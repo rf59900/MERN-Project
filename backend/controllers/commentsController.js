@@ -77,7 +77,7 @@ const getCommentsByPost= async (req, res) => {
         return;
     }
     if (await Post.exists({ _id: id })) {
-        const comments =  await Comment.find({ post: id });
+        const comments =  await Comment.find({ post: id }).populate("user");
         res.status(200).json(comments);
         return;
     } else {
