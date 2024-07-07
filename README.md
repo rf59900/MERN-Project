@@ -1,8 +1,8 @@
 # MERN-Project
 
 To run locally:
-cd backend
-npm run dev
-cd ..
-cd frontend
-npm run dev
+cd backend<br />
+npm run dev<br />
+cd ..<br />
+cd frontend<br />
+npm run dev<br />
