@@ -1,6 +1,6 @@
 # MERN-Project
 
-To run locally:
+To run locally:<br />
 cd backend<br />
 npm run dev<br />
 cd ..<br />
