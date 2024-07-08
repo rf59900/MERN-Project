@@ -30,7 +30,7 @@ const CreateComment = ({ post, replyTo }) => {
 
   return (
     <>
-    <div className="d-flex flex-column container-fluid border border-primary mt-0 px-0">
+    <div className="d-flex flex-column container-fluid bg-light bg-gradient border border-secondary mt-0 px-0">
     { active 
     ?   <div className="form-group text-center align-self-center">
         <form onSubmit={handleComment}>
@@ -55,13 +55,13 @@ const CreateComment = ({ post, replyTo }) => {
         </div>
         </form>
         </div>
-    : <div className="col align-self-end my-0">
+    : <div className="col align-self-end my-0" style={{cursor: 'pointer'}}>
         <div className="container" onClick={() => setActive(true)}>
         <div className="row">
-        <div className="col border border-danger px-0">
-        <img className="img-fluid border border-danger mx-0 px-0" style={{"height": "2rem"}} src={'/icons/ForwardArrow.svg'}/>
+        <div className="col px-0">
+        <img className="img-fluid mx-0 px-0" style={{"height": "2rem"}} src={'/icons/ForwardArrow.svg'}/>
         </div>
-        <div className="col border border-danger mx-0 px-0">
+        <div className="col mx-0 ps-0 pe-2">
         <p>{ replyTo ? "Reply" : "Comment"}</p>
         </div>
         </div>

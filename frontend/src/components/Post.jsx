@@ -12,6 +12,8 @@ import CreateComment from "./CreateComment"
   const navigate = useNavigate();
   const location = useLocation()
 
+  console.log(location.pathname.startsWith('/boards'))
+
   const handleDeletePost = async () => {
     try {
       const response = await axiosPrivate.delete(`/posts/${post._id}`);
@@ -33,12 +35,12 @@ import CreateComment from "./CreateComment"
 
    return (
      <>
-     <div className="row bg-secondary d-flex flex-row border border-secondary justify-content-end mt-5" onClick={handleLinkToPost} style={{cursor: 'pointer'}}>
+     <div className="row bg-secondary d-flex flex-row border border-bottom-0 border-secondary justify-content-end mt-5">
      <div className="col-2 text-end px-auto mx-0 ">
       {post.createdAt.split('T')[0]} {post.createdAt.split('T')[1].split('.')[0]}
     </div>
     </div>
-     <div className="row flex-row justify-content-start mb-0 bg-light bg-gradient border border-secondary ">
+     <div className={location.pathname.startsWith('/boards') ? "row flex-row justify-content-start bg-light bg-gradient border border-secondary": "row flex-row justify-content-start bg-light bg-gradient border border-bottom-0 border-secondary" } onClick={handleLinkToPost} style={{cursor: 'pointer'}}>
      <div className="col-2 py-4 px-4 border-end border-secondary" onClick={handleLinkToUser} style={{cursor: 'pointer'}}>
       { post.user.avatar != null
        ? <><img  className="img-fluid" src={'/uploads/avatars/' + post.user.avatar}/>
