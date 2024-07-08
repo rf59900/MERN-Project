@@ -1,8 +1,5 @@
 # MERN-Project
 
 To run locally:<br />
-cd backend<br />
-npm run dev<br />
-cd ..<br />
-cd frontend<br />
+Using two terminals in both the backend and frontend folders:<br />
 npm run dev<br />
