@@ -25,6 +25,11 @@ const postsRouter = require(path.join(__dirname, 'routes', 'posts.js'));
 const commentsRouter = require(path.join(__dirname, 'routes', 'comments.js'));
 const boardsRouter = require(path.join(__dirname, 'routes', 'boards.js'));
 
+const buildPath = path.join(__dirname  , "../frontend/dist");
+
+app.use(express.static(buildPath))
+
+
 const verifyJWT = require(path.join(__dirname, 'middleware', 'verifyJWT.js'));
 app.use('/users', usersRouter);
 app.use('/auth', authRouter);
@@ -33,11 +38,6 @@ app.use(verifyJWT);
 app.use('/posts',postsRouter);
 app.use('/comments', commentsRouter);
 app.use('/boards', boardsRouter);
-
-
-app.get('/', (req, res) => {
-    res.send('Hello World!');
-})
 
 const port = process.env.PORT || 3000;
 
