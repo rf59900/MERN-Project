@@ -10,7 +10,7 @@ const conn = mongoose.connect('mongodb://127.0.0.1:27017/testdb');
 conn.catch(err => console.log(err))
 
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: "http://localhost:5000",
     credentials: true
 }))
 
@@ -29,6 +29,17 @@ const buildPath = path.join(__dirname  , "../frontend/dist");
 
 app.use(express.static(buildPath))
 
+app.get("/*", (req, res) => {
+  res.sendFile(
+      path.join(__dirname, "../frontend/dist/index.html"),
+      function (err) {
+        if (err) {
+          res.status(500).send(err);
+        }
+      }
+    );
+
+})
 
 const verifyJWT = require(path.join(__dirname, 'middleware', 'verifyJWT.js'));
 app.use('/users', usersRouter);

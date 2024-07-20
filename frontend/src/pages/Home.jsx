@@ -9,7 +9,7 @@ const Home = () => {
         <ul>
         {boards.map(board => {
             return <li>
-                <Link to={"/boards/" + board}>{board}</Link>
+                <Link to={"app/boards/" + board}>{board}</Link>
                 </li>
         })}
         </ul>

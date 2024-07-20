@@ -20,7 +20,6 @@ const App = () => {
         <Route path="/" element={<Home/>} />
         <Route path="/login" element={<Login/>} />
         <Route path="/unauthorized" element={<Unauthorized/>} />
-
         <Route element={<RequireAuth allowedRoles={['User']}/>}>
           <Route path="/boards/:board" element={<Board/>} />
           <Route path="/posts/:post" element={<ViewPost/>}/>
