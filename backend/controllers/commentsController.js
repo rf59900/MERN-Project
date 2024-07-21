@@ -90,7 +90,8 @@ const getAllCommentsByUser= async (req, res) => {
     const username = req.params.username
     if (await User.exists({ username: username })) {
         const user = await User.findOne({ username: username })
-        const comments =  await Comment.find({ user: user._id});
+        const comments =  await Comment.find({ user: user._id}).populate("user");
+        console.log(comments)
         res.status(200).json(comments);
         return;
     } else {

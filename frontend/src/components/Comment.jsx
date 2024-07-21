@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useNavigate, useLocation } from "react-router-dom"
 import { AvatarImage } from "./AvatarImage"
 import { useEffect } from "react"
 import useAuth from "../hooks/useAuth"
@@ -10,6 +10,8 @@ const Comment = ( {comment }) => {
     const { auth } = useAuth();
     const axiosPrivate = useAxiosPrivate()
     const navigate = useNavigate();
+    const location = useLocation();
+
     const handleDeleteComment = async () => {
         try {
           const response = await axiosPrivate.delete(`/comments/${post._id}`);
@@ -20,9 +22,13 @@ const Comment = ( {comment }) => {
     }
 
     const handleLinkToUser = () => {
-        // navigate to view user page
+      navigate(`/users/${comment.user.username}`);
     }
     
+    const handleLinkToPost = () => {
+      navigate(`/posts/${comment.post}`);
+    }
+  
     
   return (
     <>
@@ -32,7 +38,7 @@ const Comment = ( {comment }) => {
     </div>
     </div>
     <div className="row flex-row justify-content-start bg-light bg-gradient border border-bottom-0 border-secondary">
-    <div className="col-2 py-4 px-4 border-end border-secondary">
+    <div className="col-2 py-4 px-4 border-end border-secondary" onClick={handleLinkToUser} style={{cursor: 'pointer'}}>
      { comment.user.avatar != null
       ? <><img  className="img-fluid" src={'/uploads/avatars/' + comment.user.avatar}/>
          <div className="d-flex flex-row justify-content-center py-3"><p className="mt-3">{comment.user.username}</p></div>
@@ -44,42 +50,44 @@ const Comment = ( {comment }) => {
      </div>
      { 
      comment?.img
-     ? <><div className="col-3 py-4 px-4"><img  className="img-fluid" src={'/uploads/comments/' + comment.img}/></div>
+     ? <><div className="col-3 py-4 px-4" onClick={handleLinkToPost} style={{cursor: 'pointer'}}><img  className="img-fluid" src={'/uploads/comments/' + comment.img}/></div>
      { auth?.roles?.includes('Admin')
-     ? <><div className="col-6 py-4 px-4">
+     ? <><div className="col-6 py-4 px-4" onClick={handleLinkToPost} style={{cursor: 'pointer'}}>
        <p>{comment.body}</p>
        </div>
-       <div className="col-1 d-flex align-items-center">
+       <div className="col-1 d-flex align-items-center" onClick={handleLinkToPost} style={{cursor: 'pointer'}}>
        <div className="mx-auto">
        <button className="btn btn-danger" onClick={handleDeleteComment}><h6>Delete</h6></button>
        </div>
        </div>
        </>
-     : <><div className="col-7">
+     : <><div className="col-7" onClick={handleLinkToPost} style={{cursor: 'pointer'}}>
        <p>{comment.body}</p>
        </div>
        </> }
      </>
      : <> { auth?.roles?.includes('Admin')
-     ? <><div className="col-9 py-4 px-4">
+     ? <><div className="col-9 py-4 px-4" onClick={handleLinkToPost} style={{cursor: 'pointer'}}>
        <p>{comment.body}</p>
        </div>
-       <div className="col-1 d-flex align-items-center">
+       <div className="col-1 d-flex align-items-center" onClick={handleLinkToPost} style={{cursor: 'pointer'}}>
        <div className="mx-auto">
        <button className="btn btn-danger" onClick={handleDeleteComment}><h6>Delete</h6></button>
        </div>
        </div>
        </>
-     : <><div className="col-10 py-4 px-4">
+     : <><div className="col-10 py-4 px-4" onClick={handleLinkToPost} style={{cursor: 'pointer'}}>
        <p>{comment.body}</p>
        </div>
        </> }
        </>
      }
     </div>
-    <div className="row">
+    { location.pathname.split('/')[1] == 'posts'
+    ? <div className="row">
       <CreateComment post={comment.post} replyTo={comment._id} />
      </div>
+    : null}
     </>
   )
 }

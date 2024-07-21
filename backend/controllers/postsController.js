@@ -95,7 +95,7 @@ const getPostsByUser = async (req, res) => {
     username = req.params.identifier
     if (await User.exists({ username: username })) {
         const user = await User.findOne({ username: username });
-        const posts =  await Post.find({ user: user._id });
+        const posts =  await Post.find({ user: user._id }).populate("user");
         res.status(200).json(posts);
         return;
     } else {
