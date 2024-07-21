@@ -29,7 +29,7 @@ import CreateComment from "./CreateComment"
   }
 
   const handleLinkToUser = () => {
-    // navigate to view user page
+    navigate(`/users/${post.user.username}`);
   }
 
 
@@ -40,7 +40,7 @@ import CreateComment from "./CreateComment"
       {post.createdAt.split('T')[0]} {post.createdAt.split('T')[1].split('.')[0]}
     </div>
     </div>
-     <div className={location.pathname.startsWith('/boards') ? "row flex-row justify-content-start bg-light bg-gradient border border-secondary": "row flex-row justify-content-start bg-light bg-gradient border border-bottom-0 border-secondary" } onClick={handleLinkToPost} style={{cursor: 'pointer'}}>
+     <div className={location.pathname.startsWith('/boards') ? "row flex-row justify-content-start bg-light bg-gradient border border-secondary": "row flex-row justify-content-start bg-light bg-gradient border border-bottom-0 border-secondary" } style={{cursor: 'pointer'}}>
      <div className="col-2 py-4 px-4 border-end border-secondary" onClick={handleLinkToUser} style={{cursor: 'pointer'}}>
       { post.user.avatar != null
        ? <><img  className="img-fluid" src={'/uploads/avatars/' + post.user.avatar}/>

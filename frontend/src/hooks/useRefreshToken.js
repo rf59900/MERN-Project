@@ -4,12 +4,12 @@ import { jwtDecode } from "jwt-decode"
 
 const useRefreshToken = () => {
     const { auth, setAuth } = useAuth();
-    console.log(auth)
+    //console.log(auth)
     const refresh = async () => {
         const response = await axios.get('/auth/refresh', {
             withCredentials: true
         });
-        console.log(response.data.accessToken);
+        //console.log(response.data.accessToken);
         const accessToken = response.data.accessToken;
         const decoded = jwtDecode(response.data.accessToken)
         const roles = decoded.userInfo.roles;

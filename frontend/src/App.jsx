@@ -9,6 +9,7 @@ import { LogOut} from "./pages/LogOut";
 import RequireAuth from "./components/RequireAuth";
 import PersistLogin from "./components/PersistLogin";
 import Unauthorized from "./pages/Unauthorized";
+import ViewUser from "./pages/ViewUser";
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
           <Route path="/boards/:board" element={<Board/>} />
           <Route path="/posts/:post" element={<ViewPost/>}/>
           <Route path="/logout" element={<LogOut/>} />
+          <Route path="/users/:username" element={<ViewUser />} />
         </Route>
       </Route>
     </Routes>

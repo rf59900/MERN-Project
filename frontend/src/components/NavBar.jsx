@@ -19,18 +19,17 @@ export const NavBar = () => {
     <nav className="navbar navbar-expand sticky-top navbar-dark bg-dark"
     style={{height: "5rem"}}>
       <div className="container text-light overflow-hidden">
-      <a className="navbar-brand"><Link to={"/"}>Forum</Link></a>
+      <Link to={"/"}>Forum</Link>
       <ul className="navbar-nav">
           { Object.keys(auth).length === 0 ? 
           <li className="nav-item">
-          <a
-          style={{marginBottom: "0rem"}}className="nav-link"><Link to={"/sign-up"}>Sign Up</Link></a>
-          <a className="nav-link"><Link to={"/login"}>Log in</Link></a>
+          <Link to={"/sign-up"}>Sign Up</Link>
+          <Link to={"/login"}>Log in</Link>
           </li> :
           <li className="nav-item">
           <p
           style={{marginBottom: "0rem"}}>{auth.user}</p>
-          <a href="#" className="nav-link"><Link to={"/logout"}>Log out</Link></a>
+          <Link to={"/logout"}>Log out</Link>
           </li>
           }
       </ul>
