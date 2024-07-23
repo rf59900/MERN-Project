@@ -32,15 +32,15 @@ const Comment = ( {comment }) => {
     
   return (
     <>
-    <div className="row bg-secondary d-flex flex-row border border-bottom-0 border-secondary justify-content-end mt-5">
+    <div className="row post-header d-flex flex-row border border-bottom-0 border-dark rounded-top justify-content-end mt-5">
      <div className="col-2 text-end px-auto mx-0 ">
       {comment.createdAt.split('T')[0]} {comment.createdAt.split('T')[1].split('.')[0]}
     </div>
     </div>
-    <div className="row flex-row justify-content-start bg-light bg-gradient border border-bottom-0 border-secondary">
-    <div className="col-2 py-4 px-4 border-end border-secondary" onClick={handleLinkToUser} style={{cursor: 'pointer'}}>
+    <div className={ location.pathname.startsWith('/posts') ? "row flex-row justify-content-start post-body border border-bottom-0 border-dark" : "row flex-row justify-content-start post-body border rounded-bottom border-dark" }>
+    <div className="col-2 py-4 px-4 border-end border-dark" onClick={handleLinkToUser} style={{cursor: 'pointer'}}>
      { comment.user.avatar != null
-      ? <><img  className="img-fluid" src={'/uploads/avatars/' + comment.user.avatar}/>
+      ? <><img  className="img-fluid img-thumbnail" src={'/uploads/avatars/' + comment.user.avatar}/>
          <div className="d-flex flex-row justify-content-center py-3"><p className="mt-3">{comment.user.username}</p></div>
          </>
       : <>
@@ -50,7 +50,7 @@ const Comment = ( {comment }) => {
      </div>
      { 
      comment?.img
-     ? <><div className="col-3 py-4 px-4" onClick={handleLinkToPost} style={{cursor: 'pointer'}}><img  className="img-fluid" src={'/uploads/comments/' + comment.img}/></div>
+     ? <><div className="col-3 py-4 px-4" onClick={handleLinkToPost} style={{cursor: 'pointer'}}><img  className="img-fluid img-thumbnail" src={'/uploads/comments/' + comment.img}/></div>
      { auth?.roles?.includes('Admin')
      ? <><div className="col-6 py-4 px-4" onClick={handleLinkToPost} style={{cursor: 'pointer'}}>
        <p>{comment.body}</p>
@@ -84,7 +84,7 @@ const Comment = ( {comment }) => {
      }
     </div>
     { location.pathname.split('/')[1] == 'posts'
-    ? <div className="row">
+    ? <div className="row post-body border border-dark rounded-bottom">
       <CreateComment post={comment.post} replyTo={comment._id} />
      </div>
     : null}

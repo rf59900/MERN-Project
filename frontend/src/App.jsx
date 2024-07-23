@@ -11,10 +11,11 @@ import PersistLogin from "./components/PersistLogin";
 import Unauthorized from "./pages/Unauthorized";
 import ViewUser from "./pages/ViewUser";
 
+
 const App = () => {
   return (
     <>
-    <NavBar></NavBar>
+    <NavBar />
     <Routes>
       <Route path="/sign-up" element={<SignUp/>} />
       <Route element={<PersistLogin/>}>

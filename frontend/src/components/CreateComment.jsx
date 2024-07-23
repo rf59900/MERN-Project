@@ -30,13 +30,13 @@ const CreateComment = ({ post, replyTo }) => {
 
   return (
     <>
-    <div className="d-flex flex-column container-fluid bg-light bg-gradient border border-secondary mt-0 px-0">
+    <div className="d-flex flex-column container-fluid mt-0 px-0">
     { active 
-    ?   <div className="form-group text-center align-self-center">
+    ?   <div className="form-group text-center align-self-center mb-2" style={{width: '70rem'}}>
         <form onSubmit={handleComment}>
-        <label htmlFor="exampleFormControlTextarea1">Comment</label>
-        <textarea className="form-control form-control-lg" id="newPost" onChange={(e) => setCommentBody(e.target.value)}></textarea>
-        <div className="row">
+        <label className="mt-2" htmlFor="exampleFormControlTextarea1">Comment</label>
+        <textarea className="form-control form-control-lg h-100" id="newPost" onChange={(e) => setCommentBody(e.target.value)}></textarea>
+        <div className="row mb-2">
             <div className="col">
             <button type="submit" className="btn btn-primary w-100" style={{marginTop: "1rem"}}>Post</button>
             </div>
@@ -58,11 +58,11 @@ const CreateComment = ({ post, replyTo }) => {
     : <div className="col align-self-end my-0" style={{cursor: 'pointer'}}>
         <div className="container" onClick={() => setActive(true)}>
         <div className="row">
-        <div className="col px-0">
+        <div className="col px-0 mt-1">
         <img className="img-fluid mx-0 px-0" style={{"height": "2rem"}} src={'/icons/ForwardArrow.svg'}/>
         </div>
         <div className="col mx-0 ps-0 pe-2">
-        <p>{ replyTo ? "Reply" : "Comment"}</p>
+        <p className="mt-2 me-1">{ replyTo ? "Reply" : "Comment"}</p>
         </div>
         </div>
         </div>

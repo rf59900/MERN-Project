@@ -9,6 +9,15 @@ export const Board = () => {
     const { board } = useParams();
     const [posts, setPosts] = useState([]);
     const axiosPrivate = useAxiosPrivate()
+
+    const current_boards = {
+      'a': {'name' :'Anything', 'icon': 'question_mark.svg'},
+      'f': {'name' :'Fitness & Wellness', 'icon': 'dumbell.svg'},
+      't': {'name' :'Tech & Programming', 'icon': 'programming.svg'},
+      'o': {'name' :'Outdoors & Nature', 'icon': 'pine_tree.svg'},
+      'c': {'name' :'Food & Cooking', 'icon': 'fork.svg'}
+    }
+
     const handlePosts = useEffect(() => {
       async function getPosts () {
         try {
@@ -24,13 +33,38 @@ export const Board = () => {
     }, []) 
     return (
       <>
-      <div className="container border border-primary">
-        <h1>Welcome to {board}</h1>
+      { Object.keys(current_boards).includes(board)
+      ? 
+        <div className="container mb-5">
+          <div className="row justify-content-center mt-3">
+            <div className="col-4 text-center border border-dark rounded post-header">
+              <div className="row justify-content-start">
+                <div className="col-3 border-end border-dark">
+                  <img className="img-fluid" src={`/icons/${current_boards[board].icon}`}  style={{width: '8rem'}}/>
+                </div>
+                <div className="col-9 mt-4 text-center">
+                  <h4>{current_boards[board].name}</h4>
+                </div>
+              </div>
+            </div>
+          </div>
         <CreatePost board={board}/>
         {posts.map((post) => {
           return <Post post={post}/>
         })}
-      </div>
+        { posts.length == 0
+          ? <p className="mt-5">No posts here yet...</p>
+          : null
+        }
+        </div>
+      : 
+        <div className="container mt-5">
+          <div className="row justify-content-center">
+            <div className="col-4">
+              <h3>Error: Board Not Found</h3>
+            </div>
+          </div>
+        </div> }
       </>
     )
 }

@@ -88,7 +88,7 @@ const ViewUser = () => {
                         <p className="mt-2">About</p>
                     </div>
                 </div>
-                <div className="container border">
+                <div className="container">
                     { selected == 'posts'
                     ? <>
                     {userPosts?.map((post) => {

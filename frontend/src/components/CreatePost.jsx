@@ -29,10 +29,11 @@ const CreatePost = ({ board }) => {
 
   return (
     <>
-    <div className="d-flex justify-content-center">
-    <div className="col-6">
     { active 
-    ?   <div className="form-group text-center">
+    ?      
+        <div className="d-flex justify-content-center mt-5">
+        <div className="col-12">
+        <div className="form-group text-center">
         <form onSubmit={handlePost}>
         <label htmlFor="exampleFormControlTextarea1">Create a Post</label>
         <textarea className="form-control form-control-lg" id="newPost" onChange={(e) => setPostBody(e.target.value)}></textarea>
@@ -55,10 +56,14 @@ const CreatePost = ({ board }) => {
         </div>
         </form>
         </div>
-    : <div className="d-flex justify-content-center"><button type="button" className="btn btn-primary" onClick={() => setActive(true)}>Create a Post</button></div>
+        </div>
+        </div>
+    : 
+    <div className="d-flex justify-content-end mt-5">
+    <button type="button" className="btn btn-primary" onClick={() => setActive(true)}>+ Create a Post</button>
+    </div>
+        
     }
-    </div>
-    </div>
     </>
   )
 }
