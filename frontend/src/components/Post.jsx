@@ -42,12 +42,12 @@ import CreateComment from "./CreateComment"
     </div>
      <div className={location.pathname.startsWith('/boards') || location.pathname.startsWith('/users') ? "row flex-row justify-content-start border border-dark rounded-bottom post-body": "row flex-row justify-content-start post-body border border-bottom-0 border-dark" } style={{cursor: 'pointer'}}>
      <div className="col-2 py-4 px-4 border-end border-dark" onClick={handleLinkToUser} style={{cursor: 'pointer'}}>
-      { post.user.avatar != null
+      { post?.user?.avatar != null
        ? <><img  className="img-fluid img-thumbnail" src={'/uploads/avatars/' + post.user.avatar}/>
           <div className="d-flex flex-row justify-content-center py-3"><p className="mt-3">{post.user.username}</p></div>
           </>
        : <>
-          <div className="d-flex flex-row justify-content-center py-3"><p className="mt-3">{post.user.username}</p></div>
+          <div className="d-flex flex-row justify-content-center py-3"><p className="mt-3">{post?.user?.username}</p></div>
        </>
       }
       </div>

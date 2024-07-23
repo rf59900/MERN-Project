@@ -3,6 +3,9 @@ import { useState, useEffect } from "react"
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { Post } from "../components/Post";
 import Comment from "../components/Comment";
+import useAuth from "../hooks/useAuth";
+import { HashLink } from 'react-router-hash-link';
+
 
 
 const ViewUser = () => {
@@ -12,6 +15,7 @@ const ViewUser = () => {
     const [ selected, setSelected ] = useState('posts');
     const [ userPosts, setUserPosts ] = useState(null);
     const [ userComments, setUserComments ] = useState(null);
+    const { auth } = useAuth();
 
 
 
@@ -52,6 +56,15 @@ const ViewUser = () => {
         handleUserComments();
     }, []);
 
+    const handleDeleteUser = async () => {
+        try {
+            const response = await axiosPrivate.delete(`/users/${username}`);
+            window.location.reload(); 
+        } catch(err) {
+            console.error(err);
+        }
+
+    }
    
 
 
@@ -60,14 +73,14 @@ const ViewUser = () => {
 
   return (
     <>
-    <div className="container">
+    <div className="container mb-5">
         {
             userInformation
             ?   <>
                 { userInformation?.avatar
-                ? <div className="row justify-content-center mt-3">
+                ? <div className="row justify-content-center mt-4 mb-3">
                     <div className="col-3">
-                        <img className="img-fluid" src={'/uploads/avatars/' + userInformation.avatar} />
+                        <img className="img-fluid img-thumbnail" src={'/uploads/avatars/' + userInformation.avatar} />
                     </div>
                 </div>
                 : null
@@ -78,17 +91,17 @@ const ViewUser = () => {
                     </div>
                 </div>
                 <div className="row justify-content-center text-center">
-                    <div className={ selected == 'posts' ? "col-1 border border-dark border-bottom-0 mx-2 rounded-top" : "col-1 border border-bottom-0 mx-2 rounded" } onClick={() => setSelected('posts')} style={{cursor: 'pointer'}}>
+                    <div className={ selected == 'posts' ? "col-1 border border-primary border-bottom-0 mx-2 rounded-top" : "col-1 border border-dark border-bottom-0 mx-2 rounded-top" } onClick={() => setSelected('posts')} style={{cursor: 'pointer'}}>
                         <p className="mt-2">Posts</p>
                     </div>
-                    <div className={ selected == 'comments' ? "col-1 border border-dark border-bottom-0 mx-2 rounded-top" : "col-1 border border-bottom-0 mx-2 rounded" } onClick={() => setSelected('comments')} style={{cursor: 'pointer'}}>
+                    <div className={ selected == 'comments' ? "col-1 border border-primary border-bottom-0 mx-2 rounded-top" : "col-1 border border-dark border-bottom-0 mx-2 rounded-top" } onClick={() => setSelected('comments')} style={{cursor: 'pointer'}}>
                         <p className="mt-2">Comments</p>
                     </div>
-                    <div className={ selected == 'about' ? "col-1 border border-dark border-bottom-0 mx-2 rounded-top" : "col-1 border border-bottom-0 mx-2 rounded" } onClick={() => setSelected('about')} style={{cursor: 'pointer'}}>
+                    <div className={ selected == 'about' ? "col-1 border border-primary border-bottom-0 mx-2 rounded-top" : "col-1 border border-dark border-bottom-0 mx-2 rounded-top" } onClick={() => setSelected('about')} style={{cursor: 'pointer'}}>
                         <p className="mt-2">About</p>
                     </div>
                 </div>
-                <div className="container">
+                <div className="container border-top border-primary">
                     { selected == 'posts'
                     ? <>
                     {userPosts?.map((post) => {
@@ -107,7 +120,7 @@ const ViewUser = () => {
                     ? <>
                     {userComments.map((comment) => {
                         console.log(comment.user.avatar)
-                        return <Comment comment={comment}/>
+                        return <HashLink to={`/posts/${comment.post}#${comment._id}`} style={{ color: 'inherit', textDecoration: 'inherit'}}><Comment comment={comment}/></HashLink>
                     })}
                     { userComments?.length == 0
                     ? <div className="row justify-content-center py-5">
@@ -120,7 +133,7 @@ const ViewUser = () => {
                     : null }
                     { selected == 'about'
                     ?   <>
-                        <div className="container">
+                        <div className="container mt-5">
                             <div className="row justify-content-center">
                                 <div className="col-3 text-center">
                                     <p>Date Joined: {userInformation.createdAt.split('T')[0]}</p>
@@ -136,12 +149,25 @@ const ViewUser = () => {
                                     <p>Number of Comments: {userComments.length}</p>
                                 </div>
                             </div>
+                            { auth?.roles?.includes('Admin')
+                                ? <div className="row justify-content-center text-center mt-4">
+                                    <div className="col-4">
+                                        <button onClick={() => handleDeleteUser()}className="btn btn-danger">Delete User</button>
+                                    </div>
+                                </div>
+                                : null
+                            }
                         </div>
                         </>
                     : null }
                 </div>
                 </> 
-            : <p>User Not Found</p>
+            : 
+                <div className="row justify-content-center mt-5">
+                    <div className="col-4 text-center">
+                        <h2>User Not Found...</h2>
+                    </div>
+                </div>
         }
     </div>
     </>

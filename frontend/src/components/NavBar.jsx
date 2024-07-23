@@ -35,7 +35,10 @@ export const NavBar = () => {
             <p className="mt-1 mb-0" style={{cursor: 'pointer'}} onClick={() => navigate('/logout')}>Log Out</p>
           </div>
       :
-        <p className="mt-3 me-4" style={{cursor: 'pointer'}} onClick={() => navigate('/login')}>Log In</p>
+        <div className="d-flex flex-column me-3 text-center border border-dark rounded px-3">
+          <p className="mb-0 border-bottom border-dark" style={{cursor: 'pointer'}} onClick={() => navigate('/sign-up')}>Sign Up</p>
+          <p className="mt-1 mb-0" style={{cursor: 'pointer'}} onClick={() => navigate('/login')}>Log In</p>
+        </div>
       }
      </div>
     </>

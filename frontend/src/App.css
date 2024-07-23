@@ -29,6 +29,10 @@ body {
     color: #FEEFDD;
 }
 
+.border-primary {
+    border-color: #77A6B6 !important;
+}
+
 .guidebox {
     background-color: #283845;
 }
