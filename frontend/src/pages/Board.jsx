@@ -60,8 +60,8 @@ export const Board = () => {
       : 
         <div className="container mt-5">
           <div className="row justify-content-center">
-            <div className="col-4">
-              <h3>Error: Board Not Found</h3>
+            <div className="col-4 text-center">
+              <h3>Board Not Found...</h3>
             </div>
           </div>
         </div> }

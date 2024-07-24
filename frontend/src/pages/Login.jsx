@@ -45,7 +45,11 @@ export const Login = () => {
     return (
         <>
         <div className="container col-4 mt-5">
-        <h1>Login</h1>
+            <div className="row justify-content-center">
+                <div className="col-3 text-center">
+                    <h1>Login</h1>
+                </div>
+            </div>
         <form onSubmit={handleSubmit}>
         { errorMsg ? <div class="alert alert-danger" role="alert">{errorMsg}</div>: null}
             <div class="form-group">
@@ -59,7 +63,7 @@ export const Login = () => {
                     onChange={(e) => setUsername(e.target.value)}
                     />
             </div>
-            <div class="form-group">
+            <div class="form-group mt-2">
                 <label for="password">Password</label>
                 <input 
                     type="password" 
@@ -70,8 +74,11 @@ export const Login = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     />
             </div>
-            <br/>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <div className="row mt-3 justify-content-end">
+                <div className="col-2 text-center me-3">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
         </form>
         </div>
         </>
