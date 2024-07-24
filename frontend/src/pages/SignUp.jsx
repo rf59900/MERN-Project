@@ -76,11 +76,15 @@ export const SignUp = () => {
 
     return (
         <>
-        <div className="container col-4 mt-5">
-        <h1>Sign Up</h1>
+        <div className="container col-4 mt-1">
+            <div className="row justify-content-center">
+                <div className="col-4 text-center">
+                    <h1>Sign Up</h1>
+                </div>
+            </div>
         <form onSubmit={handleSubmit}>
         { errorMsg ? <div className="alert alert-danger" role="alert">{errorMsg}</div>: null}
-            <div className="form-group">
+            <div className="form-group mb-2">
                 <label htmlFor="firstname">First Name</label>
                 <input type="firstname" 
                     className="form-control" 
@@ -91,7 +95,7 @@ export const SignUp = () => {
                     onChange={(e) => setFirstName(e.target.value)}
                     />
             </div>
-            <div className="form-group">
+            <div className="form-group mb-2">
                 <label htmlFor="lastname">Last Name</label>
                 <input type="lastname" 
                     className="form-control" 
@@ -102,7 +106,7 @@ export const SignUp = () => {
                     onChange={(e) => setLastName(e.target.value)}
                     />
             </div>
-            <div className="form-group">
+            <div className="form-group mb-2">
                 <label htmlFor="email">Email</label>
                 <input type="email" 
                     className="form-control" 
@@ -113,7 +117,7 @@ export const SignUp = () => {
                     onChange={(e) => setEmail(e.target.value)}
                     />
             </div>
-            <div className="form-group">
+            <div className="form-group mb-2">
                 <label htmlFor="username">Username</label>
                 <input type="username" 
                     className="form-control" 
@@ -124,7 +128,7 @@ export const SignUp = () => {
                     onChange={(e) => setUsername(e.target.value)}
                     />
             </div>
-            <div className="form-group">
+            <div className="form-group mb-2">
                 <label htmlFor="password1">Password</label>
                 <input 
                     type="password" 
@@ -135,7 +139,7 @@ export const SignUp = () => {
                     onChange={(e) => setPassword1(e.target.value)}
                     />
             </div>
-            <div className="form-group">
+            <div className="form-group mb-2">
                 <label htmlFor="password">Confirm Password</label>
                 <input 
                     type="password" 
@@ -149,14 +153,17 @@ export const SignUp = () => {
             <div className="mb-3">
                 <label htmlFor="formFile" className="form-label">Upload Avatar Image (Optional)</label>
                 <input 
-                    className="form-control" 
+                    className="form-control custom-file-upload" 
                     type="file" 
                     id="avatar"
                     onChange={(e) => setAvatar(e.target.files[0])}
                     />
             </div>
-            <br/>
-            <button type="submit" className="btn btn-primary">Submit</button>
+            <div className="row justify-content-end">
+                <div className="col-4 text-center">
+                    <button type="submit" className="btn btn-primary btn-block w-100">Submit</button>
+                </div>
+            </div>
         </form>
         </div>
         </>

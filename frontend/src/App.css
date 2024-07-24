@@ -79,3 +79,19 @@ input[type="file"]::file-selector-button:hover {
     border-color: #77A6B6;
     color: #FEEFDD !important;
   }
+
+.form-control:hover {
+    background-color: #202C39 !important;
+    border-color: #77A6B6;
+    color: #FEEFDD !important;  
+}
+
+.custom-file-upload:hover {
+    background-color: #202C39 !important;
+    border-color: #77A6B6;
+}
+
+.topic:hover {
+    background-color: #202C39 !important;
+    border-color: #77A6B6;
+}

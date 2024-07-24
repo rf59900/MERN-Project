@@ -8,6 +8,7 @@ const Home = () => {
     const handleLinkToBoard = (board) => {
         navigate(`/boards/${board}`);
     }
+    
     return (
         <>
         <div className="container mt-4">
@@ -23,7 +24,7 @@ const Home = () => {
                             <h2>Topics</h2>
                         </div>
                     </div>
-                    <div className="row border-bottom border-secondary" onClick={() => handleLinkToBoard('a')} style={{cursor: 'pointer'}}>
+                    <div className="row border-bottom border-secondary topic" onClick={() => handleLinkToBoard('a')} style={{cursor: 'pointer'}}>
                         <div className="col-3 py-1 border-end border-secondary">
                             <img className="img-fluid" src="icons/question_mark.svg" style={{width: '3rem'}}/>
                         </div>
@@ -34,7 +35,7 @@ const Home = () => {
                             <h6>Posts about Anything</h6>
                         </div>
                     </div>
-                    <div className="row border-bottom border-secondary" onClick={() => handleLinkToBoard('f')} style={{cursor: 'pointer'}}>
+                    <div className="row border-bottom border-secondary topic" onClick={() => handleLinkToBoard('f')} style={{cursor: 'pointer'}}>
                         <div className="col-3 py-1 border-end border-secondary">
                             <img className="img-fluid" src="icons/dumbell.svg" style={{width: '3rem'}}/>
                         </div>
@@ -45,7 +46,7 @@ const Home = () => {
                             <h6>Posts about Fitness & Wellness</h6>
                         </div>
                     </div>
-                    <div className="row border-bottom border-secondary" onClick={() => handleLinkToBoard('t')} style={{cursor: 'pointer'}}>
+                    <div className="row border-bottom border-secondary topic" onClick={() => handleLinkToBoard('t')} style={{cursor: 'pointer'}}>
                         <div className="col-3 py-1 border-end border-secondary">
                             <img className="img-fluid" src="icons/programming.svg" style={{width: '3rem'}}/>
                         </div>
@@ -56,7 +57,7 @@ const Home = () => {
                             <h6>Posts about programming & technology</h6>
                         </div>
                     </div>
-                    <div className="row border-bottom border-secondary" onClick={() => handleLinkToBoard('o')} style={{cursor: 'pointer'}}>
+                    <div className="row border-bottom border-secondary topic" onClick={() => handleLinkToBoard('o')} style={{cursor: 'pointer'}}>
                         <div className="col-3 py-1 border-end border-secondary">
                             <img className="img-fluid" src="icons/pine_tree.svg" style={{width: '3rem'}}/>
                         </div>
@@ -67,7 +68,7 @@ const Home = () => {
                             <h6>Posts about nature & the outdoors</h6>
                         </div>
                     </div>
-                    <div className="row border-bottom border-secondary" onClick={() => handleLinkToBoard('c')} style={{cursor: 'pointer'}}>
+                    <div className="row border-bottom border-secondary topic" onClick={() => handleLinkToBoard('c')} style={{cursor: 'pointer'}}>
                         <div className="col-3 py-1 border-end border-secondary">
                             <img className="img-fluid" src="icons/fork.svg" style={{width: '3rem'}}/>
                         </div>
