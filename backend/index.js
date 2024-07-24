@@ -24,15 +24,18 @@ const authRouter = require(path.join(__dirname, 'routes', 'auth.js'));
 const postsRouter = require(path.join(__dirname, 'routes', 'posts.js'));
 const commentsRouter = require(path.join(__dirname, 'routes', 'comments.js'));
 const boardsRouter = require(path.join(__dirname, 'routes', 'boards.js'));
+const imagesRouter = require(path.join(__dirname, 'routes', 'images.js'));
 
 const verifyJWT = require(path.join(__dirname, 'middleware', 'verifyJWT.js'));
 app.use('/users', usersRouter);
 app.use('/auth', authRouter);
+app.use('/images', imagesRouter);
 
 app.use(verifyJWT);
 app.use('/posts',postsRouter);
 app.use('/comments', commentsRouter);
 app.use('/boards', boardsRouter);
+
 
 
 app.get('/', (req, res) => {

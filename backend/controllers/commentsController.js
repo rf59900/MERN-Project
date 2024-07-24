@@ -4,6 +4,18 @@ const User = require(path.join('..', 'models', 'User'));
 const Post = require(path.join('..', 'models', 'Post'));
 const Comment = require(path.join('..', 'models', 'Comment'));
 const fs = require('fs');
+const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
+const crypto = require('crypto');
+
+
+const bucketName = process.env.BUCKET_NAME;
+const bucketRegion = process.env.BUCKET_REGION;
+
+const s3 = new S3Client({
+    region: bucketRegion
+});
+
+const randomImageName = (bytes = 32) => crypto.randomBytes(bytes).toString('hex');
 
 // shout outs geeksforgeeks
 const isValidObjectId = (id) => {
@@ -22,20 +34,40 @@ const getAllComments = async (req, res) => {
 
 const createComment = async (req, res) => {
     // img is either path to post image or null
-    img = req.file == undefined ? null: req.file.filename;
-    body = req.body.body == undefined ? null: req.body.body;
-    board = req.body.board;
-    replyTo = req.body.replyTo == undefined ? null: req.body.replyTo;
-    post = req.body.post
+    const img = req.file == undefined ? null: req.file.originalname;
+    const body = req.body.body == undefined ? null: req.body.body;
+    const board = req.body.board;
+    const replyTo = req.body.replyTo == undefined ? null: req.body.replyTo;
+    const post = req.body.post
 
     const user = await User.findOne({ username: req.user });
-    id = user._id;
+    const id = user._id;
 
-    const newComment = new Comment({ img: img, body: body, board: board, user: id, replyTo: replyTo, post: post});
-    await newComment.save();
+    if (img != null) {
+        const imageName = randomImageName();
 
-    res.status(200).json({"SUCCESS": "New comment created"});
-    return;
+        const params = {
+            Bucket: bucketName,
+            Key: 'comments/' + imageName,
+            Body: req.file.buffer,
+            ContentType: req.file.mimetype
+        }
+
+        const command = new PutObjectCommand(params);
+
+        await s3.send(command);
+
+        const newComment = new Comment({ img: 'comments/' + imageName, body: body, board: board, user: id, replyTo: replyTo, post: post});
+        await newComment.save();
+        res.status(200).json({"SUCCESS": "New comment created"});
+        return;
+    } else {
+        const newComment = new Comment({ img: img, body: body, board: board, user: id, replyTo: replyTo, post: post});
+        await newComment.save();
+         res.status(200).json({"SUCCESS": "New comment created"});
+         return;
+    }
+
 }
 
 const deleteComment = async (req, res) => {

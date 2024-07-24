@@ -3,6 +3,20 @@ const mongoose = require('mongoose');
 const User = require(path.join('..', 'models', 'User'));
 const bcrypt = require('bcrypt');
 const fs = require('fs');
+const dotenv = require('dotenv');
+const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
+const crypto = require('crypto');
+dotenv.config()
+
+
+const bucketName = process.env.BUCKET_NAME;
+const bucketRegion = process.env.BUCKET_REGION;
+
+const s3 = new S3Client({
+    region: bucketRegion
+});
+
+const randomImageName = (bytes = 32) => crypto.randomBytes(bytes).toString('hex');
 
 // deletes uploaded avatar image when other fields don't meet requirements
 const deleteAvatar = (avatar) => {
@@ -28,14 +42,16 @@ const getAllUsers = async (req, res) => {
 
 const createUser = async (req, res) => {
     // avatar is either path to avatar image or null
-    avatar = req.file == undefined ? null: req.file.filename;
-    firstname = req.body.firstname;
-    lastname = req.body.lastname;
-    username = req.body.username;
-    password1 = req.body.password1;
-    password2 = req.body.password2;
-    email = req.body.email;
-    roles = req?.body?.roles;
+    const avatar = req.file == undefined ? null: req.file.originalname;
+    const firstname = req.body.firstname;
+    const lastname = req.body.lastname;
+    const username = req.body.username;
+    const password1 = req.body.password1;
+    const password2 = req.body.password2;
+    const email = req.body.email;
+    const roles = req?.body?.roles;
+
+    console.log(req.file)
 
     // do error checking
     if (firstname.length <= 2) {
@@ -86,11 +102,37 @@ const createUser = async (req, res) => {
     }
 
     // create new user in db, hash password with bcrypt
-    const newUser = new User({ firstname: firstname, lastname: lastname, username: username, password: await bcrypt.hash(password1, 10), email: email, roles: roles, avatar: avatar});
-    await newUser.save();
+    // if user has avatar save in s3 bucket with randomized name, save name in db
+    try {
+        if (!(avatar == null)) {
 
-    res.status(200).json({"Sucess": "New user created"});
-    return;
+            const imageName = randomImageName();
+
+            const params = {
+                Bucket: bucketName,
+                Key: 'avatars/' + imageName,
+                Body: req.file.buffer,
+                ContentType: req.file.mimetype
+            }
+
+            const command = new PutObjectCommand(params);
+
+            await s3.send(command);
+
+            const newUser = new User({ firstname: firstname, lastname: lastname, username: username, password: await bcrypt.hash(password1, 10), email: email, roles: roles, avatar: 'avatars/' + imageName});
+            await newUser.save();
+
+            res.status(200).json({"Sucess": "New user created"});
+            return;
+        } else {
+            const newUser = new User({ firstname: firstname, lastname: lastname, username: username, password: await bcrypt.hash(password1, 10), email: email, roles: roles, avatar: avatar});
+            await newUser.save();
+
+            res.status(200).json({"Sucess": "New user created"});
+        }
+        } catch(err) {
+            console.error(err);
+        }
 }
 
 const getUser = async (req, res) => {

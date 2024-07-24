@@ -4,6 +4,7 @@ import { useEffect } from "react"
 import useAuth from "../hooks/useAuth"
 import useAxiosPrivate from "../hooks/useAxiosPrivate"
 import CreateComment from "./CreateComment"
+import useImageURL from "../hooks/useImageURL"
 
 
  export const Post = ({post}) => {
@@ -11,8 +12,6 @@ import CreateComment from "./CreateComment"
   const axiosPrivate = useAxiosPrivate()
   const navigate = useNavigate();
   const location = useLocation()
-
-  console.log(location.pathname.startsWith('/boards'))
 
   const handleDeletePost = async () => {
     try {
@@ -43,7 +42,7 @@ import CreateComment from "./CreateComment"
      <div className={location.pathname.startsWith('/boards') || location.pathname.startsWith('/users') ? "row flex-row justify-content-start border border-dark rounded-bottom post-body": "row flex-row justify-content-start post-body border border-bottom-0 border-dark" } style={{cursor: 'pointer'}}>
      <div className="col-2 py-4 px-4 border-end border-dark" onClick={handleLinkToUser} style={{cursor: 'pointer'}}>
       { post?.user?.avatar != null
-       ? <><img  className="img-fluid img-thumbnail" src={'/uploads/avatars/' + post.user.avatar}/>
+       ? <><img  className="img-fluid img-thumbnail" src={useImageURL(post.user.avatar)}/>
           <div className="d-flex flex-row justify-content-center py-3"><p className="mt-3">{post.user.username}</p></div>
           </>
        : <>
@@ -53,7 +52,7 @@ import CreateComment from "./CreateComment"
       </div>
       { 
       post?.img
-      ? <><div className="col-3 py-4 px-4" onClick={handleLinkToPost} style={{cursor: 'pointer'}}><img  className="img-fluid img-thumbnail" src={'/uploads/posts/' + post.img}/></div>
+      ? <><div className="col-3 py-4 px-4" onClick={handleLinkToPost} style={{cursor: 'pointer'}}><img  className="img-fluid img-thumbnail" src={useImageURL(post.img)}/></div>
       { auth?.roles?.includes('Admin')
       ? <><div className="col-6 py-4 px-4" onClick={handleLinkToPost} style={{cursor: 'pointer'}}>
         <p>{post.body}</p>

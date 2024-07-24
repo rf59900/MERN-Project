@@ -3,6 +3,18 @@ const mongoose = require('mongoose');
 const User = require(path.join('..', 'models', 'User'));
 const Post = require(path.join('..', 'models', 'Post'));
 const fs = require('fs');
+const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
+const crypto = require('crypto');
+
+
+const bucketName = process.env.BUCKET_NAME;
+const bucketRegion = process.env.BUCKET_REGION;
+
+const s3 = new S3Client({
+    region: bucketRegion
+});
+
+const randomImageName = (bytes = 32) => crypto.randomBytes(bytes).toString('hex');
 
 // deletes uploaded post image when other fields don't meet requirements
 const deletePostImage = (img) => {
@@ -38,7 +50,7 @@ const getAllPosts = async (req, res) => {
 
 const createPost = async (req, res) => {
     // img is either path to post image or null
-    img = req.file == undefined ? null: req.file.filename;
+    img = req.file == undefined ? null: req.file.originalname;
     body = req.body.body;
     board = req.body.board;
 
@@ -51,11 +63,32 @@ const createPost = async (req, res) => {
     const user = await User.findOne({ username: req.user });
     id = user._id;
 
-    const newPost = new Post({ img: img, body: body, board: board, user: id});
-    await newPost.save();
+    if (img != null) {
+        const imageName = randomImageName();
 
-    res.status(200).json({"SUCCESS": "New post created"});
-    return;
+        const params = {
+            Bucket: bucketName,
+            Key: 'posts/' + imageName,
+            Body: req.file.buffer,
+            ContentType: req.file.mimetype
+        }
+
+        const command = new PutObjectCommand(params);
+
+        await s3.send(command);
+
+        const newPost = new Post({ img: 'posts/' + imageName, body: body, board: board, user: id});
+        await newPost.save();
+
+        res.status(200).json({"SUCCESS": "New post created"});
+        return;
+    } else {
+        const newPost = new Post({ img: img, body: body, board: board, user: id});
+        await newPost.save();
+
+        res.status(200).json({"SUCCESS": "New post created"});
+        return;
+    }
 }
 
 const deletePost = async (req, res) => {

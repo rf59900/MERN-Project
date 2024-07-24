@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom"
 import { useState, useEffect } from "react"
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import useImageURL from "../hooks/useImageURL";
 import { Post } from "../components/Post";
 import Comment from "../components/Comment";
 import useAuth from "../hooks/useAuth";
@@ -16,6 +17,8 @@ const ViewUser = () => {
     const [ userPosts, setUserPosts ] = useState(null);
     const [ userComments, setUserComments ] = useState(null);
     const { auth } = useAuth();
+
+    
 
 
 
@@ -56,6 +59,7 @@ const ViewUser = () => {
         handleUserComments();
     }, []);
 
+    console.log(userInformation)
     const handleDeleteUser = async () => {
         try {
             const response = await axiosPrivate.delete(`/users/${username}`);
@@ -80,7 +84,7 @@ const ViewUser = () => {
                 { userInformation?.avatar
                 ? <div className="row justify-content-center mt-4 mb-3">
                     <div className="col-3">
-                        <img className="img-fluid img-thumbnail" src={'/uploads/avatars/' + userInformation.avatar} />
+                        <img className="img-fluid img-thumbnail" src={'5555'} />
                     </div>
                 </div>
                 : null
