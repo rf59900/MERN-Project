@@ -3,21 +3,19 @@ import useAxiosPrivate from './useAxiosPrivate';
 
 const useImageURL = (imageName) =>  {
 
-    const [ url, setURL ] = useState();
     const axioPrivate = useAxiosPrivate();
-    useEffect(() => {
-        const handleImage = async (imageName) =>  {
+    const handleImage = async (imageName) =>  {
+        if (imageName != null) {
             try {
                 const response = await axioPrivate.get(`/images/${imageName.split('/')[0]}+${imageName.split('/')[1]}`);
-                setURL(response.data);
+                return response.data;
             } catch(err) {
-                console.error(err);
-                return {"ERROR": "Could not find image URL."};
+                console.log(err);
+                return;
             }
         }
-        handleImage(imageName);
-    }, [])
-    return url;
+    }
+    return handleImage;
 }
 
 export default useImageURL;

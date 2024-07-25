@@ -4,7 +4,7 @@ const User = require(path.join('..', 'models', 'User'));
 const Post = require(path.join('..', 'models', 'Post'));
 const Comment = require(path.join('..', 'models', 'Comment'));
 const fs = require('fs');
-const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
+const { S3Client, PutObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3');
 const crypto = require('crypto');
 
 
@@ -80,21 +80,33 @@ const deleteComment = async (req, res) => {
     // deletes post and image associated with post if it has one
     const toBeDeleted = await Comment.findOneAndDelete({_id : id})
     if (toBeDeleted) {
-        if (toBeDeleted.img != null) {
-            fs.unlink(toBeDeleted.img, (err, data) => {
-                if (err) {
-                    console.error("Comment Image could not be deleted");
-                    res.status(400).json({"ERROR": "Comment image could not be deleted"});
-                    return;
-                } else {
-                    res.status(200).json({"SUCCESS": "Comment Deleted"});
-                    return;
-                }
-        })
-        } else {
-            res.status(200).json({"SUCCESS": "Comment Deleted"});
-            return;
+        if (toBeDeleted?.img != null) {
+            const params = {
+                Bucket: bucketName,
+                Key: toBeDeleted.img
+            }
+
+            const command = new DeleteObjectCommand(params);
+
+            await s3.send(command);
         }
+        // delete replies to comment
+        const replies = await Comment.find({ replyTo: toBeDeleted._id});
+        for (reply of replies) {
+            const deletedReply = await Comment.findOneAndDelete({ _id : reply._id});
+            if (deletedReply.img != null) {
+                const params = {
+                    Bucket: bucketName,
+                    Key: deletedReply.img
+                }
+    
+                const command = new DeleteObjectCommand(params);
+    
+                await s3.send(command);
+            }
+        }
+        res.status(200).json({"SUCCESS": "Comment deleted"})
+        return;
     } else {
         res.status(400).json({"ERROR": "Comment does not exist"});
         return;

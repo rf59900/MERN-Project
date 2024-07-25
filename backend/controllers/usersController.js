@@ -1,10 +1,12 @@
 const path = require('path');
 const mongoose = require('mongoose');
 const User = require(path.join('..', 'models', 'User'));
+const Comment = require(path.join('..', 'models', 'Comment'));
+const Post = require(path.join('..', 'models', 'Post'));
 const bcrypt = require('bcrypt');
 const fs = require('fs');
 const dotenv = require('dotenv');
-const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
+const { S3Client, PutObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3');
 const crypto = require('crypto');
 dotenv.config()
 
@@ -148,22 +150,74 @@ const getUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
     const toBeDeleted = await User.findOneAndDelete({username : req.params.username})
+    console.log(toBeDeleted)
     if (toBeDeleted) {
-        if (toBeDeleted.avatar != null) {
-            fs.unlink(toBeDeleted.avatar, (err, data) => {
-                if (err) {
-                    console.error("Avatar Image could not be deleted");
-                    res.status(400).json({"ERROR": "Avatar image could not be deleted"});
-                    return;
-                } else {
-                    res.status(200).json({"SUCCESS": "User Deleted"});
-                    return;
-                }
-        })
-        } else {
-            res.status(200).json({"SUCCESS": "User Deleted"});
-            return;
+
+        // delete user avatar
+        if (toBeDeleted?.avatar != null) {
+            const params = {
+                Bucket: bucketName,
+                Key: toBeDeleted.avatar
+            }
+
+            const command = new DeleteObjectCommand(params);
+
+            await s3.send(command);
         }
+
+        // delete all users posts and comments on those posts
+        const posts =  await Post.find({ user: toBeDeleted._id });
+        for (let post of posts) {
+            const postToBeDeleted = await Post.findOneAndDelete({_id : post._id});
+                if (postToBeDeleted?.img != null) {
+                    const params = {
+                        Bucket: bucketName,
+                        Key: postToBeDeleted.img
+                    }
+
+                    const command = new DeleteObjectCommand(params);
+
+                    await s3.send(command);
+                }
+                console.log(post)
+                const comments =  await Comment.find({ post: postToBeDeleted._id });
+                for (let comment of comments) {
+                    console.log(comment)
+                    const commentToBeDeleted = await Comment.findOneAndDelete({_id : comment._id });
+                    
+                    if (commentToBeDeleted?.img != null) {
+                        const params = {
+                            Bucket: bucketName,
+                            Key: commentToBeDeleted.img
+                        }
+        
+                        const command = new DeleteObjectCommand(params);
+        
+                        await s3.send(command);
+                    
+                    }
+                }
+
+        }
+       
+        // delete all users comments
+        const userComments = await Comment.find({ user: toBeDeleted._id});
+        for (let comment of userComments) {
+            const deletedComment = await Comment.findOneAndDelete({ _id: comment._id});
+            if (deletedComment?.img != null) {
+                const params = {
+                    Bucket: bucketName,
+                    Key: deletedComment.img
+                }
+
+                const command = new DeleteObjectCommand(params);
+
+                await s3.send(command);
+
+            }
+        }
+
+        res.status(200).json({"SUCCESS": "User deleted."});
     } else {
         res.status(400).json({"ERROR": "User does not exist"});
         return;

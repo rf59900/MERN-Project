@@ -2,8 +2,9 @@ const path = require('path');
 const mongoose = require('mongoose');
 const User = require(path.join('..', 'models', 'User'));
 const Post = require(path.join('..', 'models', 'Post'));
+const Comment = require(path.join('..', 'models', 'Comment'));
 const fs = require('fs');
-const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
+const { S3Client, PutObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3');
 const crypto = require('crypto');
 
 
@@ -98,31 +99,44 @@ const deletePost = async (req, res) => {
         res.status(400).json({"ERROR": "Invalid Post id"});
         return;
     }
+
     // deletes post and image associated with post if it has one
     const toBeDeleted = await Post.findOneAndDelete({_id : id})
     if (toBeDeleted) {
-        if (toBeDeleted.img != null) {
-            fs.unlink(path.join('..', 'frontend', 'public', 'uploads', 'posts', toBeDeleted.img), (err, data) => {
-                if (err) {
-                    console.log(err)
-                    console.error("Post Image could not be deleted");
-                    res.status(400).json({"ERROR": "Post image could not be deleted"});
-                    return;
-                } else {
-                    res.status(200).json({"SUCCESS": "Post Deleted"});
-                    return;
-                }
-        })
-        } else {
-            res.status(200).json({"SUCCESS": "Post Deleted"});
-            return;
+        if (toBeDeleted?.img != null) {
+            const params = {
+                Bucket: bucketName,
+                Key: toBeDeleted.img
+            }
+
+            const command = new DeleteObjectCommand(params);
+
+            await s3.send(command);
         }
+        
+        // delete all comments associated with post
+        const comments = await Comment.find({ post: toBeDeleted._id});
+        for (comment of comments) {
+            const deletedComment = await Comment.findOneAndDelete({ _id: comment._id});
+            // if comment has image delete it
+            if (deletedComment?.img != null) {
+                const params = {
+                    Bucket: bucketName,
+                    Key: deletedComment.img
+                }
+    
+                const command = new DeleteObjectCommand(params);
+    
+                await s3.send(command);
+            }
+        }    
     } else {
         res.status(400).json({"ERROR": "Post does not exist"});
         return;
     }
-   
 }
+   
+
 
 const getPostsByUser = async (req, res) => {
     username = req.params.identifier

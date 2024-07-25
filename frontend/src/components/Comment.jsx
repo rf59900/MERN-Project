@@ -1,6 +1,6 @@
 import { Link, useNavigate, useLocation } from "react-router-dom"
 import { AvatarImage } from "./AvatarImage"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import useAuth from "../hooks/useAuth"
 import useAxiosPrivate from "../hooks/useAxiosPrivate"
 import CreateComment from "./CreateComment"
@@ -13,9 +13,30 @@ const Comment = ( {comment }) => {
     const navigate = useNavigate();
     const location = useLocation();
 
+    const handleImage = useImageURL();
+
+    const [ images, setImages ] = useState();
+
+
+    useEffect(() => {
+      const handleImages = async () => {
+        try {
+          const commentImage = await handleImage(comment.img);
+          const userImage = await handleImage(comment.user.avatar);
+          setImages({
+            commentImage: commentImage,
+            userImage: userImage
+          })
+          } catch(err) {
+            console.error(err);
+          }
+        }
+      handleImages();
+      }, []);
+
     const handleDeleteComment = async () => {
         try {
-          const response = await axiosPrivate.delete(`/comments/${post._id}`);
+          const response = await axiosPrivate.delete(`/comments/${comment._id}`);
           window.location.reload(); 
         } catch(err) {
           console.error(err);
@@ -37,7 +58,7 @@ const Comment = ( {comment }) => {
     <div className={ location.pathname.startsWith('/posts') ? "row flex-row justify-content-start post-body border border-bottom-0 border-dark" : "row flex-row justify-content-start post-body border rounded-bottom border-dark" }>
     <div className="col-2 py-4 px-4 border-end border-dark" onClick={handleLinkToUser} style={{cursor: 'pointer'}}>
      { comment?.user?.avatar != null
-      ? <><img  className="img-fluid img-thumbnail" src={useImageURL(comment.user.avatar)}/>
+      ? <><img  className="img-fluid img-thumbnail" src={images?.userImage}/>
          <div className="d-flex flex-row justify-content-center py-3"><p className="mt-3">{comment?.user?.username}</p></div>
          </>
       : <>
@@ -47,7 +68,7 @@ const Comment = ( {comment }) => {
      </div>
      { 
      comment?.img
-     ? <><div className="col-3 py-4 px-4"><img  className="img-fluid img-thumbnail" src={useImageURL(comment.img)}/></div>
+     ? <><div className="col-3 py-4 px-4"><img  className="img-fluid img-thumbnail" src={images?.commentImage}/></div>
      { auth?.roles?.includes('Admin')
      ? <><div className="col-6 py-4 px-4">
        <p>{comment.body}</p>

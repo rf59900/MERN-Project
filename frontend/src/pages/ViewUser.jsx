@@ -18,10 +18,8 @@ const ViewUser = () => {
     const [ userComments, setUserComments ] = useState(null);
     const { auth } = useAuth();
 
-    
-
-
-
+    const handleImage = useImageURL();
+    const [ image, setImage ] = useState();
 
     useEffect(() => {
         const handUserInfo = async () => {
@@ -59,6 +57,21 @@ const ViewUser = () => {
         handleUserComments();
     }, []);
 
+    useEffect(() => {
+        if (userInformation?.avatar) {
+            const handleUserImage = async () => {
+                try {
+                    const userImage = await handleImage(userInformation?.avatar);
+                    setImage(userImage);
+                } catch(err) {
+                    console.error(err);
+                }
+            }
+            handleUserImage();
+        }
+    }, [userInformation]);
+    console.log(image)
+
     console.log(userInformation)
     const handleDeleteUser = async () => {
         try {
@@ -84,7 +97,7 @@ const ViewUser = () => {
                 { userInformation?.avatar
                 ? <div className="row justify-content-center mt-4 mb-3">
                     <div className="col-3">
-                        <img className="img-fluid img-thumbnail" src={'5555'} />
+                        <img className="img-fluid img-thumbnail" src={image} />
                     </div>
                 </div>
                 : null
