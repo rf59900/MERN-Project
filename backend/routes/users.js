@@ -18,6 +18,9 @@ router
     .get(userController.getUser)
     .delete(userController.deleteUser)
 
+router
+    .route('/update-avatar')
+    .patch(upload.single('avatar'), userController.updateAvatar)
 
 
 

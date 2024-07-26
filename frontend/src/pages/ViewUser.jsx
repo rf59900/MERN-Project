@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom"
+import { useParams, useNavigate } from "react-router-dom"
 import { useState, useEffect } from "react"
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import useImageURL from "../hooks/useImageURL";
@@ -17,6 +17,7 @@ const ViewUser = () => {
     const [ userPosts, setUserPosts ] = useState(null);
     const [ userComments, setUserComments ] = useState(null);
     const { auth } = useAuth();
+    const navigate = useNavigate();
 
     const handleImage = useImageURL();
     const [ image, setImage ] = useState();
@@ -35,7 +36,7 @@ const ViewUser = () => {
             try {
                 const response = await axiosPrivate.get(`posts/${username}`);
                 const posts = response.data;
-                console.log(posts)
+                //console.log(posts)
                 setUserPosts(posts)
 
             } catch(err) {
@@ -47,7 +48,7 @@ const ViewUser = () => {
             try {
                 const response = await axiosPrivate.get(`comments/user/${username}`);
                 const comments = response.data;
-                console.log(comments)
+                //console.log(comments)
                 setUserComments(comments)
 
             } catch(err) {
@@ -70,9 +71,10 @@ const ViewUser = () => {
             handleUserImage();
         }
     }, [userInformation]);
-    console.log(image)
+    //console.log(image)
+    
 
-    console.log(userInformation)
+    //console.log(userInformation)
     const handleDeleteUser = async () => {
         try {
             const response = await axiosPrivate.delete(`/users/${username}`);
@@ -82,6 +84,13 @@ const ViewUser = () => {
         }
 
     }
+
+    const handleLinkToUpdateAvatar = () => {
+        if (auth.user == userInformation.username) {
+            navigate(`/update-avatar/${username}`);
+        }
+    }
+
    
 
 
@@ -95,12 +104,25 @@ const ViewUser = () => {
             userInformation
             ?   <>
                 { userInformation?.avatar
-                ? <div className="row justify-content-center mt-4 mb-3">
+                ? 
+                <div className="row justify-content-center mt-4 mb-3">
                     <div className="col-3">
-                        <img className="img-fluid img-thumbnail" src={image} />
+                        <img 
+                        className={auth.user == userInformation.username ? "img-fluid img-thumbnail change-avatar clickable w-100" : "img-fluid img-thumbnail w-100"} 
+                        src={image}
+                        onClick={() => handleLinkToUpdateAvatar()}
+                         />
                     </div>
                 </div>
-                : null
+                : <>{userInformation?.username == auth?.user 
+                    ?
+                    <div className="row justify-content-center mt-5 mb-0">
+                        <div className="col-2 text-center">
+                            <button className={"btn btn-primary btn-block w-100"} onClick={handleLinkToUpdateAvatar}>Upload Avatar</button>
+                        </div>
+                    </div>
+                    : null
+                }</>
                 }   
                 <div className={userInformation?.avatar ? "row justify-content-center" : "row justify-content-center mt-5"}>
                     <div className="col-3 text-center">

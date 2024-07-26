@@ -59,7 +59,7 @@ import useImageURL from "../hooks/useImageURL"
      <div className={location.pathname.startsWith('/boards') || location.pathname.startsWith('/users') ? "row flex-row justify-content-start border border-dark rounded-bottom post-body": "row flex-row justify-content-start post-body border border-bottom-0 border-dark" } style={{cursor: 'pointer'}}>
      <div className="col-2 py-4 px-4 border-end border-dark" onClick={handleLinkToUser} style={{cursor: 'pointer'}}>
       { post?.user?.avatar != null
-       ? <><img  className="img-fluid img-thumbnail" src={images?.userImage}/>
+       ? <><img  className="img-fluid img-thumbnail w-100" src={images?.userImage}/>
           <div className="d-flex flex-row justify-content-center py-3"><p className="mt-3">{post.user.username}</p></div>
           </>
        : <>
@@ -69,7 +69,7 @@ import useImageURL from "../hooks/useImageURL"
       </div>
       { 
       post?.img
-      ? <><div className="col-3 py-4 px-4" onClick={handleLinkToPost} style={{cursor: 'pointer'}}><img  className="img-fluid img-thumbnail" src={images?.postImage}/></div>
+      ? <><div className="col-3 py-4 px-4" onClick={handleLinkToPost} style={{cursor: 'pointer'}}><img  className="img-fluid img-thumbnail w-100" src={images?.postImage}/></div>
       { auth?.roles?.includes('Admin')
       ? <><div className="col-6 py-4 px-4" onClick={handleLinkToPost} style={{cursor: 'pointer'}}>
         <p>{post.body}</p>

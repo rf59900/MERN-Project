@@ -34,9 +34,9 @@ export const SignUp = () => {
             form.append('password1', password1);
             form.append('password2', password2);
             form.append('email', email);
-            // first two registered users are automatically
+            // first two registered users are automatically admins
             const users = await axios.get('/users');
-            if (users?.data?.lenght < 3 || users?.data?.lenght === undefined) {
+            if (users?.data?.length < 2 || users?.data?.length === undefined) {
                 form.append('roles[]', 'User'); 
                 form.append('roles[]', 'Admin'); 
                 const response = await axios.post('/users', form, {

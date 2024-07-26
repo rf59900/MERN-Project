@@ -224,9 +224,45 @@ const deleteUser = async (req, res) => {
     }
 }
 
+const updateAvatar = async (req, res) => {
+    const username = req.body.username
+    const user = await User.findOne({ username: username });
+    if (user) {
+        if (user?.avatar == null) {
+            const imageName = 'avatars/' + randomImageName();
+            await User.findOneAndUpdate({ _id: user._id}, { avatar: imageName });
+
+            const params = {
+                Bucket: bucketName,
+                Key: imageName,
+                Body: req.file.buffer,
+                ContentType: req.file.mimetype
+            }
+            const command = new PutObjectCommand(params);
+            await s3.send(command);
+        } else {
+            console.log(user.avatar)
+            const params = {
+                Bucket: bucketName,
+                Key: user?.avatar,
+                Body: req.file.buffer,
+                ContentType: req.file.mimetype
+            }
+            const command = new PutObjectCommand(params);
+            await s3.send(command);
+        }
+        res.status(200).json({"SUCCESS": "User avatar updated."});
+        return;
+    } else {
+        res.status(404).json({"ERROR": "User not found."});
+        return;
+    }
+}
+
 module.exports = {
     getAllUsers,
     createUser,
     getUser,
-    deleteUser
+    deleteUser,
+    updateAvatar
 }

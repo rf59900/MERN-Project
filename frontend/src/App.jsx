@@ -10,6 +10,7 @@ import RequireAuth from "./components/RequireAuth";
 import PersistLogin from "./components/PersistLogin";
 import Unauthorized from "./pages/Unauthorized";
 import ViewUser from "./pages/ViewUser";
+import UpdateAvatar from "./pages/UpdateAvatar";
 
 
 const App = () => {
@@ -28,6 +29,7 @@ const App = () => {
           <Route path="/posts/:post" element={<ViewPost/>}/>
           <Route path="/logout" element={<LogOut/>} />
           <Route path="/users/:username" element={<ViewUser />} />
+          <Route path="/update-avatar/:username" element={<UpdateAvatar/>}/>
         </Route>
       </Route>
     </Routes>

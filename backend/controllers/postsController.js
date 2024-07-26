@@ -17,22 +17,6 @@ const s3 = new S3Client({
 
 const randomImageName = (bytes = 32) => crypto.randomBytes(bytes).toString('hex');
 
-// deletes uploaded post image when other fields don't meet requirements
-const deletePostImage = (img) => {
-    if (img != null) {
-        fs.unlink(img, (err, data) => {
-            if (err) {
-                console.error("Avatar Image could not be deleted");
-                res.status(400).json({"ERROR": "Post image could not be deleted"});
-                return;
-            } else {
-                return;
-            }
-    })
-    } else {
-        return;
-    }
-}
 
 // shout outs geeksforgeeks
 const isValidObjectId = (id) => {
@@ -57,7 +41,6 @@ const createPost = async (req, res) => {
 
     if (!body) {
         res.status(400).json({"ERROR": "Post requires body"});
-        deletePostImage(img);
         return;
     }
 

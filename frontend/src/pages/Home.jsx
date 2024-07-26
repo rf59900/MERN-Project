@@ -11,13 +11,13 @@ const Home = () => {
     
     return (
         <>
-        <div className="container mt-4">
-            <div className="row justify-content-center">
-                <div className="col-6 text-center">
-                    <h1>Welcome to Web Forum Name</h1>
+        <div className="container mb-3">
+            <div className="row justify-content-center" style={{marginTop: '-5rem'}}>
+                <div className="col-4 text-center">
+                    <img src={"./icons/mainlogo.png"} className="img-fluid"/>
                 </div>
             </div>
-            <div className="row justify-content-center mt-5">
+            <div className="row justify-content-center" style={{marginTop: '-7rem'}}>
                 <div className="col-6 text-center border border-secondary rounded guidebox">
                     <div className="row justify-content-center border-bottom border-secondary">
                         <div className="col-4">

@@ -24,7 +24,7 @@ export const LogOut = () => {
     })
     return (
     <>
-    <div className="row justify-content-center mt-5">
+    <div className="row justify-content-center mt-5 mx-auto">
         <div className="col-8">
             <div className="row justify-content-center">
                 <div className="col-4 text-center">
