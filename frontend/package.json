@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "sync": "aws s3 sync ./dist/ 's3://currentconversations-frontend/'",
+    "invalidate": "aws cloudfront create-invalidation --distribution-id your-distribution-id EQ9LHH9XGTU2L --paths '/*'"
   },
   "dependencies": {
     "@cascadia-code/scroll-to-hash-element": "^2.0.2",
