@@ -11,6 +11,7 @@ import PersistLogin from "./components/PersistLogin";
 import Unauthorized from "./pages/Unauthorized";
 import ViewUser from "./pages/ViewUser";
 import UpdateAvatar from "./pages/UpdateAvatar";
+import About from "./pages/About";
 
 
 const App = () => {
@@ -23,6 +24,7 @@ const App = () => {
         <Route path="/" element={<Home/>} />
         <Route path="/login" element={<Login/>} />
         <Route path="/unauthorized" element={<Unauthorized/>} />
+        <Route path="/about" element={<About />} />
 
         <Route element={<RequireAuth allowedRoles={['User']}/>}>
           <Route path="/boards/:board" element={<Board/>} />

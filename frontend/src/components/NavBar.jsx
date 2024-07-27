@@ -23,7 +23,7 @@ export const NavBar = () => {
           <div className="col-1 ms-2" onClick={() => navigate('/')} style={{cursor: 'pointer'}}>
             <img src={'/icons/minilogo.png'} className="img-fluid"/>
           </div>
-          <div className="col ms-5">
+          <div className="col ms-5 clickable" onClick={() => navigate('/about')}>
             <p>About</p>
           </div>
         </div>
