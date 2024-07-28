@@ -22,11 +22,11 @@ export const Board = () => {
       async function getPosts () {
         try {
           const response = await axiosPrivate.get(`/boards/${board}`);
-          console.log(response.data)
+          //console.log(response.data)
           const newPosts = response.data
           setPosts(newPosts);
         } catch(err) {
-          console.log(err)
+          console.error(err)
         }
       }
     getPosts()
