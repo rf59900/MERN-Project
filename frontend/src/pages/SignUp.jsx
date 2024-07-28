@@ -14,6 +14,7 @@ export const SignUp = () => {
 
 
     const [errorMsg, setErrorMsg] = useState('');
+    const [successMsg, setSuccessMsg] = useState('');
 
 
     const handleSubmit = async (e) => {
@@ -43,13 +44,13 @@ export const SignUp = () => {
                     headers: {
                         'content-type': 'multipart/form-data'
                     }});
-                console.log(response);
+                //console.log(response);
             } else {
                 const response = await axios.post('/users', form, {
                     headers: {
                         'content-type': 'multipart/form-data'
                     }});
-                console.log(response);
+                //console.log(response);
             }
             setAvatar(null)
             setUsername('')
@@ -58,6 +59,7 @@ export const SignUp = () => {
             setFirstName('')
             setLastName('')
             setEmail('')
+            setSuccessMsg('Account created!')
         } catch (err) {
             if (!err) {
                 setErrorMsg('No response from server.')
@@ -84,6 +86,7 @@ export const SignUp = () => {
             </div>
         <form onSubmit={handleSubmit}>
         { errorMsg ? <div className="alert alert-danger" role="alert">{errorMsg}</div>: null}
+        { successMsg ? <div className="alert alert-success" role="alert">{successMsg}</div>: null}
             <div className="form-group mb-2">
                 <label htmlFor="firstname">First Name</label>
                 <input type="firstname" 

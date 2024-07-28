@@ -24,7 +24,7 @@ export const Login = () => {
                     withCredentials: true
                 }
             );
-            console.log(response.headers.cookies);
+            //console.log(response.headers.cookies);
             const accessToken = response?.data?.accessToken
             setAuth({ user: username, accessToken });
             setUsername('')
@@ -51,11 +51,11 @@ export const Login = () => {
                 </div>
             </div>
         <form onSubmit={handleSubmit}>
-        { errorMsg ? <div class="alert alert-danger" role="alert">{errorMsg}</div>: null}
-            <div class="form-group">
-                <label for="username">Username</label>
+        { errorMsg ? <div className="alert alert-danger" role="alert">{errorMsg}</div>: null}
+            <div className="form-group">
+                <label htmlFor="username">Username</label>
                 <input type="username" 
-                    class="form-control" 
+                    className="form-control" 
                     id="username" 
                     aria-describedby="usernameHelp" 
                     placeholder="Enter username"
@@ -63,11 +63,11 @@ export const Login = () => {
                     onChange={(e) => setUsername(e.target.value)}
                     />
             </div>
-            <div class="form-group mt-2">
-                <label for="password">Password</label>
+            <div className="form-group mt-2">
+                <label htmlFor="password">Password</label>
                 <input 
                     type="password" 
-                    class="form-control" 
+                    className="form-control" 
                     id="password" 
                     placeholder="Password"
                     value={password}
@@ -76,7 +76,7 @@ export const Login = () => {
             </div>
             <div className="row mt-3 justify-content-end">
                 <div className="col-2 text-center me-3">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" className="btn btn-primary">Submit</button>
                 </div>
             </div>
         </form>

@@ -21,7 +21,7 @@ export const Board = () => {
     const handlePosts = useEffect(() => {
       async function getPosts () {
         try {
-          const response = await axiosPrivate.get(`http://localhost:5000/boards/${board}`);
+          const response = await axiosPrivate.get(`/boards/${board}`);
           console.log(response.data)
           const newPosts = response.data
           setPosts(newPosts);

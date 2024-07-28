@@ -10,7 +10,7 @@ const useImageURL = (imageName) =>  {
                 const response = await axioPrivate.get(`/images/${imageName.split('/')[0]}+${imageName.split('/')[1]}`);
                 return response.data;
             } catch(err) {
-                console.log(err);
+                console.error(err);
                 return;
             }
         }

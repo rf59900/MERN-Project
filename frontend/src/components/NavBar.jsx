@@ -12,7 +12,7 @@ export const NavBar = () => {
 
   useEffect(() => {
     setUser(auth?.user);
-    console.log(auth.roles)
+    console.log(auth?.roles)
   }, [])
   
   return (
