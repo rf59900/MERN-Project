@@ -158,7 +158,7 @@ const ViewUser = () => {
                     { selected == 'comments'
                     ? <>
                     {userComments.map((comment) => {
-                        console.log(comment.user.avatar)
+                        //console.log(comment.user.avatar)
                         return <HashLink to={`/posts/${comment.post}#${comment._id}`} style={{ color: 'inherit', textDecoration: 'inherit'}}><Comment comment={comment}/></HashLink>
                     })}
                     { userComments?.length == 0

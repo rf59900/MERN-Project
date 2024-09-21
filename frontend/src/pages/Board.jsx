@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import CreatePost from "../components/CreatePost";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { Post } from "../components/Post";
+import axios from "../api/axios";
 
 export const Board = () => {
     const { board } = useParams();
@@ -21,8 +22,8 @@ export const Board = () => {
     const handlePosts = useEffect(() => {
       async function getPosts () {
         try {
-          const response = await axiosPrivate.get(`/boards/${board}`);
-          //console.log(response.data)
+          const response = await axios.get(`/boards/${board}`);
+          console.log(response.data)
           const newPosts = response.data
           setPosts(newPosts);
         } catch(err) {

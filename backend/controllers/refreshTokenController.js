@@ -10,7 +10,7 @@ const handleRefreshToken = async (req, res) => {
         res.status(401).json({"Error": "No jwt"})
         return
     }
-    console.log(cookies.jwt);
+    //console.log(cookies.jwt);
     const refreshToken = cookies.jwt;
 
     if (!await User.exists({refreshToken: refreshToken})) {
@@ -25,6 +25,7 @@ const handleRefreshToken = async (req, res) => {
         process.env.REFRESH_TOKEN_SECRET,
         (err, decoded) => {
             if (err || user.username != decoded.username) {
+                console.log("here");
                 res.status(403).json({"ERROR": "Unauthorized"})
                 return;
             }

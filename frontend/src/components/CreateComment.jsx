@@ -1,16 +1,25 @@
 import { useState  } from "react"
 import axios from "../api/axios";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import { useNavigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 
 const CreateComment = ({ post, replyTo }) => {
     const [active, setActive] = useState(false);
     const [postBody, setCommentBody] = useState('');
     const [image, setImage] = useState(null);
+    const nav = useNavigate();
+    const { auth } = useAuth();
 
     const axiosPrivate = useAxiosPrivate();
 
     const handleComment = async (e) => {
         e.preventDefault();
+        // if not logged in navigate to login page
+        if (!auth?.user) {
+            nav('/login');
+            return;
+        }
         try {
             const form = new FormData();
             form.append('img', image);
@@ -18,7 +27,7 @@ const CreateComment = ({ post, replyTo }) => {
             form.append('post', post);
             replyTo ? form.append('replyTo', replyTo) : null;
             const response = await axiosPrivate.post('/comments', form);
-            console.log(response);
+            //console.log(response);
         } catch(err) {
             console.error(err);
         }

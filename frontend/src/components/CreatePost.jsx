@@ -1,23 +1,32 @@
 import { useState  } from "react"
 import axios from "../api/axios";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import useAuth from "../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 const CreatePost = ({ board }) => {
     const [active, setActive] = useState(false);
     const [postBody, setPostBody] = useState('');
     const [image, setImage] = useState(null);
+    const { auth } = useAuth();
+    const nav = useNavigate();
 
     const axiosPrivate = useAxiosPrivate();
 
     const handlePost = async (e) => {
         e.preventDefault();
+         // if not logged in navigate to login page
+         if (!auth?.user) {
+            nav('/login');
+            return;
+        }
         try {
             const form = new FormData();
             form.append('img', image);
             form.append('body', postBody);
             form.append('board', board);
             const response = await axiosPrivate.post('/posts', form);
-            console.log(response);
+            //console.log(response);
         } catch(err) {
             console.error(err);
         }

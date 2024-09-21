@@ -53,9 +53,9 @@ const UpdateAvatar = () => {
                 headers: {
                     'content-type': 'multipart/form-data'
             }});
-            console.log(response.data)
+            //console.log(response.data)
         } catch(err) {
-            console.log(err)
+            console.error(err)
         }
         setAvatar(null)
         navigate(-1);

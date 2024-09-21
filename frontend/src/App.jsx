@@ -26,13 +26,12 @@ const App = () => {
         <Route path="/unauthorized" element={<Unauthorized/>} />
         <Route path="/about" element={<About />} />
 
-        <Route element={<RequireAuth allowedRoles={['User']}/>}>
+        
           <Route path="/boards/:board" element={<Board/>} />
           <Route path="/posts/:post" element={<ViewPost/>}/>
           <Route path="/logout" element={<LogOut/>} />
           <Route path="/users/:username" element={<ViewUser />} />
           <Route path="/update-avatar/:username" element={<UpdateAvatar/>}/>
-        </Route>
       </Route>
     </Routes>
     </>
